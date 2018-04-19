@@ -1,10 +1,20 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
+import SettingItem from '../models/SettingItem.jsx';
 
 export default class ProductGridItem extends React.Component {
+    setClassName(){
+        if( this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN)
+            return "product-grid-item card";
+        else if( this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN && this.props.index%2===0)
+            return "product-grid-item card first";
+        else if( this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN && this.props.index%2===1)
+            return "product-grid-item card second";
+    }
+
     render() {
         return (
-        <div className="product-grid-item card"> 
+        <div className={this.setClassName()}> 
             <div className="name"> {this.props.product.name} </div>
             <StarRatingComponent 
                 name="rate1" 
@@ -21,10 +31,5 @@ export default class ProductGridItem extends React.Component {
             </div>
         </div>
         );
-        /* <div className="footer-half-container" >
-        </div>
-        <div className="footer-half-container">
-        </div>
-        <div className="category"> {this.props.product.category} </div> */
     }
 }

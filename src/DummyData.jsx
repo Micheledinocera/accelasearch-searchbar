@@ -56,70 +56,70 @@ export default class DummyData{
         {
             "name":"Lou Okuneva",
             "category":"category2",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2,
             "price":"€ 150,99"
         },{
             "name":"Ms. Yasmine Berge",
             "category":"category2",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2,
             "price":"€ 100,00"
         },{
             "name":"Noble Olson",
             "category":"category2",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2,
             "price":"€ 100,00"
         },{
             "name":"Dr. Magdalena Lemke",
             "category":"category2",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2,
             "price":"€ 100,00"
         },{
             "name":"Wilhelm Hermiston V",
             "category":"category1",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2,
             "price":"€ 100,00"
         },{
             "name":"Miss Carolina Kuhn",
             "category":"category2",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2.5,
             "price":"€ 100,00"
         },{
             "name":"Dr. Adan Jones",
             "category":"category3",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":1,
             "price":"€ 100,00"
         },{
             "name":"Hailey Russel",
             "category":"category1",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":5,
             "price":"€ 100,00"
         },{
             "name":"Korey Lesch",
             "category":"category3",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":2,
             "price":"€ 100,00"
         },{
             "name":"Warren Gaylord",
             "category":"category3",
-            "image":"https://picsum.photos/500/500?random",
+            "image":"https://picsum.photos/300/300?random",
             "desc":"https://loripsum.net/api/plaintext/1?l=short",
             "rating":3,
             "price":"€ 100,00"

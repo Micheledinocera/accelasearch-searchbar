@@ -9,8 +9,17 @@ export default class SettingItem {
     static TYPE_RADIO="radio";
     static TYPE_SLIDER="slider";
     static TYPE_RANGE="range";
-    static DISPLAY_GRID="grid";
+    static DISPLAY_SINGLE_COLUMN="single-column";
+    static DISPLAY_DOUBLE_COLUMN="double-column";
     static DISPLAY_LIST="list";
+    static ORDER_LIST=[
+        "Alfabetico ascendente",
+        "Alfabetico discendente",
+        "Prezzo ascendente",
+        "Prezzo discendente",
+        "Rating ascendente",
+        "Rating discendente"
+    ];
 
     type ="";
     title="";

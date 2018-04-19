@@ -2,8 +2,12 @@ import 'rc-collapse/assets/index.css';
 import FontIcon from 'material-ui/FontIcon';
 import React from 'react';
 import { getMuiTheme, MuiThemeProvider} from 'material-ui/styles';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import faColumns from '@fortawesome/fontawesome-free-solid/faColumns'
 // import CollapsibleItem from './components/CollapsibleItem.jsx';
 import ProductGridItem from './components/ProductGridItem.jsx';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import ProductListItem from './components/ProductListItem.jsx';
 import HorizontalScroll from './components/HorizontalScroll.jsx';
 import ActiveFilterItem from './components/ActiveFilterItem.jsx'
@@ -26,12 +30,13 @@ class App extends React.Component {
       isSearching: false,
       mostSearchedCategories:DummyData.getDummyMostSearched(),
       filtersVisibility: false,
-      productsDisplay:SettingItem.DISPLAY_GRID,
+      productsDisplay:SettingItem.DISPLAY_DOUBLE_COLUMN,
       settings:DummyData.getDummySettings(),
       activeFilters:[],
       searchValue:"",
       data : [],
-      activeKeys:[]
+      activeKeys:[],
+      orderChosen:SettingItem.ORDER_LIST[0]
     }
     // this.barWidth=parseInt(this.props.barWidth,10);
     this.url = 'https://randomapi.com/api/wtue8jke?key=V0N1-X5TM-Z9BQ-JGQR&results=25';
@@ -373,17 +378,60 @@ render() {
             </div>
         </div>
         <div className="results-container">
-          <div className="single-column">
-            {this.state.productsDisplay===SettingItem.DISPLAY_GRID?
-              this.state.data.map((product, i) => <ProductGridItem theme={this.muiTheme} product={product} key={i}> </ProductGridItem>):
-              this.state.data.map((product, i) => <ProductListItem product={product} key={i}> </ProductListItem>)
-            }
+          <div className="results-container-header">
+            <div className="results-number"> {this.state.data.length} </div>
+            <div className="results-label"> Results </div>
+            <div className="results-order"> 
+              <SelectField
+                value={this.state.orderChosen}
+                onChange={(event, index, value) => {
+                  this.setState({orderChosen: value});
+                  this.handleChange();
+                }}
+                style={{width:"100%", border: "solid 1px lightgray",borderRadius: "10px", paddingLeft: "10px",marginTop: "5px"}}
+                labelStyle={{fontSize:"37px",color:"ligthgray"}}
+                maxHeight={300}>
+                  {
+                    SettingItem.ORDER_LIST.map((item,index)=>
+                      <MenuItem value={item} key={item + index} primaryText={item} style={{fontSize:"37px",color:"ligthgray",marginTop:"20px"}}/>
+                  )}
+              </SelectField>
+            </div>
           </div>
+          <div className="layout-icons" style={{display:"flex"}}>
+            <FontAwesomeIcon onClick={() => this.setState({productsDisplay:SettingItem.DISPLAY_DOUBLE_COLUMN})} icon={faColumns} style={{color:this.state.productsDisplay===SettingItem.DISPLAY_DOUBLE_COLUMN?this.secondaryColor:'black'}} />
+            <div className="fonticon">
+              <FontIcon onClick={() => this.setState({productsDisplay:SettingItem.DISPLAY_LIST})} className="material-icons" style={{color:this.state.productsDisplay===SettingItem.DISPLAY_LIST?this.secondaryColor:'black'}}>view_list</FontIcon>
+            </div>
+            <div className="fonticon">
+              <FontIcon onClick={() => this.setState({productsDisplay:SettingItem.DISPLAY_SINGLE_COLUMN})} className="material-icons" style={{color:this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?this.secondaryColor:'black'}}>view_days</FontIcon>
+            </div>
+          </div>
+          { this.state.productsDisplay!==SettingItem.DISPLAY_LIST?
+          <div className={this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?SettingItem.DISPLAY_SINGLE_COLUMN:SettingItem.DISPLAY_DOUBLE_COLUMN}>
+            {
+              this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?
+                this.state.data.map((product, i) => <ProductGridItem theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductGridItem>):
+                this.state.data.map((product, i, array) => 
+                  i%2===0? 
+                    <div className="pair-product-container">
+                      <ProductGridItem theme={this.muiTheme} product={product} key={"double-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductGridItem>
+                      <ProductGridItem theme={this.muiTheme} product={array[i+1]} key={"double-column" + product.name + i+1} index={i+1} display={this.state.productsDisplay}> </ProductGridItem>
+                    </div>:
+                    null
+                )
+            }
+          </div>:
+            <div>
+              {this.state.data.map((product, i) => <ProductListItem theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductListItem>)}
+            </div>
+          }
         </div>
       </div>
     </div>
     </MuiThemeProvider>
   );
+  // this.state.data.map((product, i) => <ProductListItem product={product} key={i}> </ProductListItem>)
   // <button className="toggle-list" onClick={this.toggleProductView.bind(this)} style={{left:Math.max(this.barWidth*0.9,850)}}> Toggle view </button>
   // <CollapsibleItem 
   //  key={item.title + i} title={item.title} categories={item.values} activeKey={item.selectedValue} selectedCategoryHandler={(value) => this.selectedCategoryHandler(value,item)}/>  
