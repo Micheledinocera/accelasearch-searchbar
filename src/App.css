@@ -594,3 +594,9 @@ button.toggle-list{
   left:50%;
   transform: translateX(-50%);
 }
+
+.sound-wave{
+  display:none;
+  margin-top: 10%;
+  width: 100%;
+}

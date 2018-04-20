@@ -2,8 +2,8 @@ import 'rc-collapse/assets/index.css';
 import FontIcon from 'material-ui/FontIcon';
 import React from 'react';
 import { getMuiTheme, MuiThemeProvider} from 'material-ui/styles';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import faColumns from '@fortawesome/fontawesome-free-solid/faColumns'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import faColumns from '@fortawesome/fontawesome-free-solid/faColumns';
 // import CollapsibleItem from './components/CollapsibleItem.jsx';
 import ProductGridItem from './components/ProductGridItem.jsx';
 import SelectField from 'material-ui/SelectField';
@@ -17,6 +17,7 @@ import CheckboxItem from './components/CheckboxItem.jsx';
 // import Input from 'react-speech-recognition-input';
 // import SpeechRecognition from 'react-speech-recognition';
 // import { VoicePlayer, VoiceRecognition } from 'react-voice-components'
+import { ReactMic } from 'react-mic';
 import SettingItem from './models/SettingItem.jsx'
 import DummyData from './DummyData.jsx'
 import $ from 'jquery';
@@ -41,20 +42,20 @@ class App extends React.Component {
     // this.barWidth=parseInt(this.props.barWidth,10);
     this.url = 'https://randomapi.com/api/wtue8jke?key=V0N1-X5TM-Z9BQ-JGQR&results=25';
     this.secondUrl = 'http://localhost:8080/api/react?value=a';
-    const SpeechRecognition = window.SpeechRecognition
-      || window.webkitSpeechRecognition
-      || window.mozSpeechRecognition
-      || window.msSpeechRecognition
-      || window.oSpeechRecognition
-    this.recognition = new SpeechRecognition();
+    // const SpeechRecognition = window.SpeechRecognition
+    //   || window.webkitSpeechRecognition
+    //   || window.mozSpeechRecognition
+    //   || window.msSpeechRecognition
+    //   || window.oSpeechRecognition
+    //this.recognition = new SpeechRecognition();
     /* en-US, en-GB, es-ES, fr-FR, it-IT, de-DE, ja-JP, pt-BR, zh-CN */
-    this.recognition.lang="it-IT";
-    this.recognition.addEventListener('result',  (value) => {
-      this.setState({ startRecognition: false });
-      $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
-      this.closeSearchPanel();
-      this.handleChange();
-    })
+    //this.recognition.lang="it-IT";
+    // this.recognition.addEventListener('result',  (value) => {
+    //   this.setState({ startRecognition: false });
+    //   $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
+    //   this.closeSearchPanel();
+    //   this.handleChange();
+    // })
     this.handleChange = this.handleChange.bind(this);
     this.showLayer = this.showLayer.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
@@ -241,16 +242,27 @@ openSearchPanel(){
   this.setState({isSearching:true});
 }
 
+openSearchPanelHalf(){
+  $('.header').css('height','100vh');
+  $('.filter').css('display','none');
+  $('.horizontal-scroll').css('display','none');
+  $('.search-bar-container').css('top','25%');
+  $('#ittweb-accelasearch-bar-layer').prop('disabled',true);
+  this.setState({isSearching:true});
+}
+
 closeSearchPanel(){
   $('.header').css('height','100px');
   $('.filter').css('display','flex');
   $('.horizontal-scroll').css('display','flex');
   $('.search-bar-container').css('top','0');
+  $('#ittweb-accelasearch-bar-layer').prop('disabled',false);
+  $('.sound-wave').css('display','none');
   this.setState({
     isSearching:false,
     startRecognition:false
   });
-  this.recognition.stop();
+  // this.recognition.stop();
 }
 
 toggleFilter(item){
@@ -307,13 +319,18 @@ renderIcon(){
 
 voiceRecognize(){
   if (this.state.startRecognition){
-    this.recognition.stop();
+    // this.recognition.stop();
     this.closeSearchPanel();
   } else {
-    this.openSearchPanel();
-    this.recognition.start();
+    this.openSearchPanelHalf();
+    $('.sound-wave').css('display','block');
+    // this.recognition.start();
   }
   this.setState({startRecognition:!this.state.startRecognition})
+}
+
+onStopRecording(recordedBlob){
+  console.log(recordedBlob);
 }
 
 render() {
@@ -335,6 +352,12 @@ render() {
         <div className="search-bar-container">
           <input className="search-bar" type="text" id="ittweb-accelasearch-bar-layer"/>
           <FontIcon onClick={() => this.voiceRecognize()} className="material-icons mic">{this.state.startRecognition?"mic_off":"mic"}</FontIcon>
+          <ReactMic
+            record={this.state.startRecognition}
+            className="sound-wave"
+            onStop={this.onStopRecording}
+            strokeColor="#4f8fed"
+            backgroundColor="#FFFFFF" />
         </div>
         <HorizontalScroll mostSearched={this.state.mostSearchedCategories}/>
       </div>

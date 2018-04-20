@@ -20,6 +20,7 @@
     "react-dom": "^16.2.0",
     "react-fontawesome": "^1.6.1",
     "react-icons": "^2.2.7",
+    "react-mic": "^9.1.2",
     "react-radio-buttons": "^1.2.1",
     "react-radio-group": "^3.0.2",
     "react-rangeslider": "^2.2.0",
@@ -29,7 +30,9 @@
     "react-speech-recognition-input": "^0.1.1",
     "react-star-rating-component": "^1.4.1",
     "react-tag-input": "^4.9.1",
-    "react-voice-components": "^1.0.0"
+    "react-voice-components": "^1.0.0",
+    "react-wavesurfer": "^0.8.6",
+    "wavesurfer.js": "^2.0.0-beta01"
   },
   "scripts": {
     "start": "react-scripts start",
