@@ -41,8 +41,8 @@ export default class DummyData{
                 {name:"item32asd",children:[]}]
     }];
 
-    static bannerLarge='<html><head><title></title></head><body><p style="background-color:blue;height:25vh"><img alt="" src="https://picsum.photos/300/300?random" /><img alt="" src="https://images3.alphacoders.com/654/654249.png" style="height:182px; width:200px" />BANNER</p></body></html>';
-    static bannerSmall='<html><head><title></title></head><body><p style="background-color:blue;height:8vh"><img alt="" src="https://picsum.photos/300/300?random" /><img alt="" src="https://images3.alphacoders.com/654/654249.png" style="height:100px; width:100px" />BANNER</p></body></html>';
+    static bannerLarge='<html><head><title></title></head><body><p style="background-color:blue;height:25vh"><img alt="" src="https://picsum.photos/200/200?random" style="height:182px; width:200px" />BANNER</p></body></html>';
+    static bannerSmall='<html><head><title></title></head><body><p style="background-color:blue;height:8vh"><img alt="" src="https://picsum.photos/100/100?random" style="height:100px; width:100px" />BANNER</p></body></html>';
     static sliderValues1 = {min:0,max:100};
     static sliderValues2 = {min:1,max:99};
 
