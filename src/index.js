@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 var websiteSearchBar= document.getElementById('ittweb-accelasearch-bar');
 var width=document.defaultView.getComputedStyle(document.getElementById("ittweb-accelasearch-bar")).getPropertyValue("width")

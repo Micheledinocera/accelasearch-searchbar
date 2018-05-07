@@ -6,7 +6,7 @@ export default class HorizontalScroll extends React.Component {
         <div className="horizontal-scroll"> 
             {
                 this.props.mostSearched.map((item,index) =>
-                <div key={item+ "_"+index}> {item} </div>
+                <div key={item+ "_"+index} onClick={this.props.clickHandler}> {item} </div>
             )
             }
         </div>

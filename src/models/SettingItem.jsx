@@ -9,9 +9,12 @@ export default class SettingItem {
     static TYPE_RADIO="radio";
     static TYPE_SLIDER="slider";
     static TYPE_RANGE="range";
+    static TYPE_RATING="rating";
     static DISPLAY_SINGLE_COLUMN="single-column";
     static DISPLAY_DOUBLE_COLUMN="double-column";
     static DISPLAY_LIST="list";
+    static BANNER_TYPE_LARGE="L";
+    static BANNER_TYPE_SMALL="S";
     static ORDER_LIST=[
         "Alfabetico ascendente",
         "Alfabetico discendente",

@@ -14,6 +14,7 @@ import ActiveFilterItem from './components/ActiveFilterItem.jsx'
 import RadioGroupItem from './components/RadioGroupItem.jsx'
 import SliderItem from './components/SliderItem.jsx';
 import CheckboxItem from './components/CheckboxItem.jsx';
+import RatingItem from './components/RatingItem.jsx';
 // import Input from 'react-speech-recognition-input';
 // import SpeechRecognition from 'react-speech-recognition';
 // import { VoicePlayer, VoiceRecognition } from 'react-voice-components'
@@ -30,14 +31,18 @@ class App extends React.Component {
       startRecognition: false,
       isSearching: false,
       mostSearchedCategories:DummyData.getDummyMostSearched(),
+      maybeLookingFor:DummyData.getDummyMaybeLooking(),
       filtersVisibility: false,
       productsDisplay:SettingItem.DISPLAY_DOUBLE_COLUMN,
       settings:DummyData.getDummySettings(),
       activeFilters:[],
       searchValue:"",
+      selectedHint:DummyData.getDummyMostSearched()[0].title,
       data : [],
       activeKeys:[],
-      orderChosen:SettingItem.ORDER_LIST[0]
+      orderChosen:SettingItem.ORDER_LIST[0],
+      banner_type: SettingItem.BANNER_TYPE_SMALL,
+      banner: DummyData.getBanner()
     }
     // this.barWidth=parseInt(this.props.barWidth,10);
     this.url = 'https://randomapi.com/api/wtue8jke?key=V0N1-X5TM-Z9BQ-JGQR&results=25';
@@ -60,6 +65,8 @@ class App extends React.Component {
     this.showLayer = this.showLayer.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
     this.handleChangeSlider = this.handleChangeSlider.bind(this);
+    this.horizontalClick = this.horizontalClick.bind(this);
+    this.ratingSelectedhandler = this.ratingSelectedhandler.bind(this);
     this.openSearchLayer = this.openSearchLayer.bind(this);
     this.handleAfterChangeSlider = this.handleAfterChangeSlider.bind(this);
     this.activeFilterClick = this.activeFilterClick.bind(this);
@@ -86,6 +93,7 @@ class App extends React.Component {
 
 handleChange() {
   var data=DummyData.getDummyProducts();
+  // var data={results:[]};
   this.setState({data:data.results});
   this.setActiveFilters();
   //fetch(this.secondUrl)
@@ -111,12 +119,18 @@ handleChange() {
   //   $('#ittweb-accelasearch-bar-container').css('display','none');
   //   // $('#ittweb-accelasearch-bar-container').removeClass('appear');
   // }
+  this.setState({banner: DummyData.getBanner()})
+  if(this.state.banner!==""){
+    $(".banner-value").html(this.state.banner);
+    $(".banner").css("display","block");
+  }
   this.forceUpdate();
 }
 
 showLayer() {
   this.websiteSearchBar.blur();
   var data=DummyData.getDummyProducts();
+  // var data={results:[]};
   this.setState({data:data.results});
   this.setActiveFilters();
   $('#ittweb-accelasearch-bar-container').css('display','flex');
@@ -167,6 +181,18 @@ handleAfterChangeSlider(value,item){
   item.setSelectedValue(value);
   this.setItemValue(item);
   this.handleChange();
+}
+
+horizontalClick(event){
+  var value=event.target.innerText;
+  value= value.replace(",", "");
+  this.setState({searchValue:value});
+  $("#ittweb-accelasearch-bar-layer").val(value);
+}
+
+ratingSelectedhandler(value,item){
+  item.setSelectedValue(value);
+  this.setItemValue(item);
 }
 
 checkboxHandler(value,label,item){
@@ -262,11 +288,9 @@ closeSearchPanel(){
     isSearching:false,
     startRecognition:false
   });
-  // this.recognition.stop();
 }
 
 toggleFilter(item){
-  debugger;
   var tempKeys=this.state.activeKeys;
   var index=tempKeys.indexOf(item);
   if(index===-1)
@@ -338,7 +362,10 @@ render() {
     this.setState({data:[]});
   }
   var removeIconWhite=<FontIcon style={{ color:"white"}} onClick={() => this.setState({filtersVisibility: false})} className="material-icons close">close</FontIcon>;
-  var filterIcon=<div className="filter" onClick={() => this.setState({filtersVisibility: true})}>
+  var filterIcon=<div className="filter" onClick={() => {
+    this.setState({filtersVisibility: true});
+    window.scrollTo(0,0);
+    }}>
     <div className="Oval"> <span> {this.state.activeFilters.length} </span> </div>
     <FontIcon className={"material-icons filter-icon"}>filter_list</FontIcon>
   </div>;
@@ -346,6 +373,7 @@ render() {
     <MuiThemeProvider muiTheme={this.muiTheme}>
     <div id="ittweb-accelasearch-bar-container" /*style={{width:this.barWidth}}*/ >    
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
       <div className="header">
         { this.renderIcon() }
         { filterIcon }
@@ -359,7 +387,6 @@ render() {
             strokeColor="#4f8fed"
             backgroundColor="#FFFFFF" />
         </div>
-        <HorizontalScroll mostSearched={this.state.mostSearchedCategories}/>
       </div>
       <div className="layer-container">
         <div className={this.state.filtersVisibility?"filter-container show":"filter-container hide"}>
@@ -391,6 +418,10 @@ render() {
                       return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} > <RadioGroupItem 
                         key={item.title + i} title={item.title} values={item.values} selectedValue={item.selectedValue} radioSelectedhandler={(value) => this.radioSelectedhandler(value,item)}/>  
                         </Panel>
+                    case SettingItem.TYPE_RATING:
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} > <RatingItem 
+                        key={item.title + i} title={item.title} theme={this.muiTheme} selectedValue={item.selectedValue} ratingSelectedhandler={(value) => this.ratingSelectedhandler(value,item)}/>
+                        </Panel>
                     default:
                       return "";
                   }}
@@ -401,6 +432,18 @@ render() {
             </div>
         </div>
         <div className="results-container">
+        { this.state.data.length>0?
+          <div style={{marginTop: "80px"}}>
+          <div className="hint"> 
+            { this.state.mostSearchedCategories.map(
+              (item,index)=> <span className={this.state.selectedHint===item.title?"selected":""} onClick={(event)=>{
+                this.setState({selectedHint:event.target.innerText.trim()});
+              }}> {item.title} </span>
+            ) }
+          </div>
+          <HorizontalScroll mostSearched={this.state.mostSearchedCategories.filter((item)=>item.title===this.state.selectedHint)[0].values} clickHandler={this.horizontalClick}/>
+          <div className="maybe-label"> Forse cercavi</div>
+          <HorizontalScroll mostSearched={this.state.maybeLookingFor} clickHandler={this.horizontalClick} />
           <div className="results-container-header">
             <div className="results-number"> {this.state.data.length} </div>
             <div className="results-label"> Results </div>
@@ -444,12 +487,32 @@ render() {
                     null
                 )
             }
-          </div>:
+            </div>:
             <div>
               {this.state.data.map((product, i) => <ProductListItem theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductListItem>)}
             </div>
           }
+          </div>:
+          <div>
+            <div className="no-results-label"> Siamo spiacenti ma non è stato trovato nessun risultato coerente. </div>
+            <div className="maybe-label-no-results"> Forse cercavi: </div>
+            <div className="maybe-value"> {this.state.maybeLookingFor.map(
+              (item,index,array) => <span className="maybe-value-item" onClick={this.horizontalClick}> {item + (index+1===array.length?"":",")} </span>
+            )}
+            </div>
+          </div>
+        }
         </div>
+      </div>
+      <div className="banner" style={{height:this.state.banner_type===SettingItem.BANNER_TYPE_LARGE?"25vh":"8vh"}}>
+        <div className="banner-close"> 
+          <FontIcon onClick={() => {
+            this.setState({banner:""});
+            $(".banner-value").html(this.state.banner);
+            $(".banner").css("display","none");
+          }} className="material-icons">close</FontIcon>
+        </div>
+        <div className="banner-value"> </div>
       </div>
     </div>
     </MuiThemeProvider>
