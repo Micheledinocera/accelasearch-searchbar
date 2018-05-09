@@ -10,6 +10,9 @@ export default class SettingItem {
     static TYPE_SLIDER="slider";
     static TYPE_RANGE="range";
     static TYPE_RATING="rating";
+    static TYPE_SIMPLE="simple";
+    static TYPE_GROUP="group";
+    static TYPE_CONFIGURABLE="configurable";
     static DISPLAY_SINGLE_COLUMN="single-column";
     static DISPLAY_DOUBLE_COLUMN="double-column";
     static DISPLAY_LIST="list";
