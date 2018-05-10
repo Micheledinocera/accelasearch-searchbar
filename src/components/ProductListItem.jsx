@@ -9,8 +9,10 @@ export default class ProductListItem extends React.Component {
         super(props);
         this.state={
             selected:false,
-            subProduct:this.props.product.subProducts.length>0?this.props.product.subProducts[0]:null
+            subProduct:null,
+            partialConfiguration:[]
         }
+        this.configurationLength=this.props.product.subProducts.length>0 && this.props.product.subProducts[0].configuration!=null?this.props.product.subProducts[0].configuration.length:0;
         this.clickHandler=this.clickHandler.bind(this);
         this.buttonClick = this.buttonClick.bind(this);
         this.retrieveConfigurations = this.retrieveConfigurations.bind(this);
@@ -92,38 +94,42 @@ export default class ProductListItem extends React.Component {
     renderConfigurable(){
         return <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.clickHandler}> 
         <div className="not-selected-container">
-            <img className="image" src={this.state.subProduct.image} alt=""/>
+            <img className="image" src={this.props.product.image} alt=""/>
             <div className="info-container">
-                <div className="name"> {this.state.subProduct.name} </div>
+                <div className="name"> {this.props.product.name} </div>
                 <div className="price-container" >
-                    <div className="secondary-price strikediag"> {this.state.subProduct.price} </div>
-                    <div className="price"> {this.state.subProduct.price} </div>
+                    <div className="secondary-price strikediag"> {this.props.product.price} </div>
+                    <div className="price"> {this.props.product.price} </div>
                 </div>
                 <StarRatingComponent 
                     name="rate1" 
                     starCount={5}
-                    value={this.state.subProduct.rating}
+                    value={this.props.product.rating}
                     editing={false}
                     starColor={this.props.theme.palette.primary1Color}
                     emptyStarColor={'gray'}
                 />
                 <div className="card-footer">
                     <div style={{width:"50%",display:this.state.selected?'block':'none'}}>
-                        <div className="secondary-price strikediag"> {this.state.subProduct.price} </div>
-                        <div className="price"> {this.state.subProduct.price} </div>
+                        <div className="secondary-price strikediag"> {this.props.product.price} </div>
+                        <div className="price"> {this.props.product.price} </div>
                     </div>
-                    <button className="cart-button" onClick={this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?null:this.buttonClick}> {this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?'Show Details':'Add To Cart'} </button>
+                    {
+                        this.state.subProduct!==null?
+                        <button className="cart-button" onClick={this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?null:this.buttonClick}> {this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?'Show Details':'Add To Cart'} </button>:
+                        <button className="cart-button disabled" onClick={(event)=>event.stopPropagation()}> Complete Configuration </button>
+                    }
                 </div>
             </div>
         </div>
-        <img className="image" src={this.state.subProduct.image} alt=""/>
+        <img className="image" src={this.props.product.image} alt=""/>
         <div className="short_desc">
             <div className="title"> Short Desctiption </div>
-            <div className="value"> {this.state.subProduct.short_desc} </div>
+            <div className="value"> {this.props.product.short_desc} </div>
         </div>
         <div className="description">
             <div className="title"> Desctiption </div>
-            <div className="value"> {this.state.subProduct.desc} </div>
+            <div className="value"> {this.props.product.desc} </div>
             {this.props.product.type===SettingItem.TYPE_CONFIGURABLE?
             <div className="configurable">
                 {this.retrieveConfigurations().map(
@@ -142,52 +148,48 @@ export default class ProductListItem extends React.Component {
     }
 
     checkConfigutrationClassName(item,configuration_item){
+        let check = true;
         let className = "value";
         if(this.checkSubProductConfiguration(configuration_item))
             className+=" selected";
-
-        var tempConfiguration=[];
-        this.state.subProduct.configuration.forEach((subProductConfigurationItem)=>tempConfiguration.push({
-            type:subProductConfigurationItem.type,
-            title:subProductConfigurationItem.title,
-            value:subProductConfigurationItem.value
-        }));
-        tempConfiguration.forEach((tempConfigurationItem)=>{
-            if(item.title===tempConfigurationItem.title) 
-                tempConfigurationItem.value=configuration_item
-        });
-        let check = this.props.product.subProducts.some((subProductConfigurationItem) =>
-            this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
-        );
-        return check?className:className+" strikediag-black";
-    }
-
-    checkSubProductConfiguration(configuration_item){
-        var check=false;
-        this.state.subProduct.configuration.forEach((item)=>{
-            if(item.value===configuration_item)
-                check=true;
-        });
-        return check;
-    }
-
-    configurationClick(event,value,selectedValue){
-        event.stopPropagation();
-        var tempConfiguration=[]
-        this.state.subProduct.configuration.forEach((item)=>tempConfiguration.push({
-            type:item.type,
-            title:item.title,
-            value:item.value
-        }));
-        tempConfiguration.forEach((item)=>{
-            if(item.title===value.title) 
-                item.value=selectedValue
-        });
-        this.props.product.subProducts.forEach((item) =>{
-            if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
-                this.setState({subProduct:item});
+        
+            var tempConfiguration=[];
+        if(this.state.subProduct!==null){    
+            this.state.subProduct.configuration.forEach((subProductConfigurationItem)=>tempConfiguration.push({
+                type:subProductConfigurationItem.type,
+                title:subProductConfigurationItem.title,
+                value:subProductConfigurationItem.value
+            }));
+            tempConfiguration.forEach((tempConfigurationItem)=>{
+                if(item.title===tempConfigurationItem.title) 
+                    tempConfigurationItem.value=configuration_item
+            });
+            check = this.props.product.subProducts.some((subProductConfigurationItem) =>
+                this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
+            );
+        } else {
+            this.state.partialConfiguration.forEach((partialConfigurationItem)=>tempConfiguration.push({
+                type:partialConfigurationItem.type,
+                title:partialConfigurationItem.title,
+                value:partialConfigurationItem.value
+            }));
+            if(tempConfiguration.length!==0 && tempConfiguration.some((tempConfigurationItem)=> tempConfigurationItem.title===item.title)){
+                tempConfiguration.forEach((tempConfigurationItem)=>{
+                    if(tempConfigurationItem.title===item.title) 
+                        tempConfigurationItem.value=configuration_item
+                });
+            } else {
+                tempConfiguration.push({
+                    type:item.type,
+                    title:item.title,
+                    value:configuration_item
+                });
             }
-        });
+            check = this.props.product.subProducts.some((subProductConfigurationItem) =>
+                this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
+            );
+        }
+        return check?className:className+" strikediag-black";
     }
 
     checkConfigurationEquality(configuration,tempConfiguration){
@@ -200,6 +202,74 @@ export default class ProductListItem extends React.Component {
             })
         );
         return check;
+    }
+
+    checkSubProductConfiguration(configuration_item){
+        var check=false;
+        if(this.state.subProduct!==null){
+            this.state.subProduct.configuration.forEach((item)=>{
+                if(item.value===configuration_item)
+                    check=true;
+            });
+        } else {
+            this.state.partialConfiguration.forEach((item)=>{
+                if(item.value===configuration_item)
+                    check=true;
+            });
+        }
+        return check;
+    }
+
+    configurationClick(event,value,selectedValue){
+        event.stopPropagation();
+        var tempConfiguration=[]
+        if(this.state.subProduct!==null)
+        {
+            this.state.subProduct.configuration.forEach((item)=>tempConfiguration.push({
+                type:item.type,
+                title:item.title,
+                value:item.value
+            }));
+            tempConfiguration.forEach((item)=>{
+                if(item.title===value.title) 
+                    item.value=selectedValue
+            });
+            this.props.product.subProducts.forEach((item) =>{
+                if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
+                    this.setState({subProduct:item});
+                }
+            });
+        } else {
+            this.state.partialConfiguration.forEach((item)=>tempConfiguration.push({
+                type:item.type,
+                title:item.title,
+                value:item.value
+            }));
+            if(tempConfiguration.length!==0 && tempConfiguration.some((item)=> item.title===value.title)){
+                tempConfiguration.forEach((item)=>{
+                    if(item.title===value.title) 
+                        item.value=selectedValue
+                });
+            } else {
+                tempConfiguration.push({
+                    type:value.type,
+                    title:value.title,
+                    value:selectedValue
+                });
+            }
+            var productPrediction={counter:0,index:0}
+            this.props.product.subProducts.forEach((item,index) =>{
+                if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
+                    productPrediction.counter++;
+                    productPrediction.index=index;
+                    this.setState({partialConfiguration:tempConfiguration});
+                    if(tempConfiguration.length===this.configurationLength)
+                        this.setState({subProduct:item});
+                }
+            });
+            if(productPrediction.counter===1)
+                this.setState({subProduct:this.props.product.subProducts[productPrediction.index]});
+        }
     }
 
     renderCards(){

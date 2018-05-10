@@ -154,7 +154,7 @@ center {
   border-radius: 10px;
   cursor: pointer;
   transform:scale(1);
-  transition: all .2s ease-in-out;
+  /* transition: all .2s ease-in-out; */
 }
 
 .product-list-item:not(.selected) .description{
@@ -175,7 +175,7 @@ center {
   margin-bottom: 40px !important;
   cursor: pointer;
   transform:scale(1);
-  transition: all .2s ease-in-out;
+  /* transition: all .2s ease-in-out; */
   margin: 15px;
 }
 
@@ -809,7 +809,7 @@ button.toggle-list{
 
 .single-product-container{
   height: 500px;
-  transition: all .5s ease-in-out; 
+  /* transition: all .5s ease-in-out;  */
   margin-top: 200px;
 }
 
@@ -976,4 +976,8 @@ button.toggle-list{
   border: solid 3px black;
   color: black;
   font-weight: 600;
+}
+
+.cart-button.disabled{
+  opacity: 0.4;
 }

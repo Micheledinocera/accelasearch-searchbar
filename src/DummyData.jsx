@@ -130,9 +130,9 @@ export default class DummyData{
                         "label":"XL",
                     },{
                         "type":"other",
-                        "title":"Configuration Title",
-                        "value":"value1",
-                        "label":"label1"
+                        "title":"cloth",
+                        "value":"cotton",
+                        "label":"cotton"
                     }],
                     "price":"€ 150,99"
                 },{
@@ -154,9 +154,9 @@ export default class DummyData{
                         "label":"XL"
                     },{
                         "type":"other",
-                        "title":"Configuration Title",
-                        "value":"value2",
-                        "label":"label2"
+                        "title":"cloth",
+                        "value":"silk",
+                        "label":"silk"
                     }],
                     "price":"€ 150,99"
                 },{
@@ -178,9 +178,9 @@ export default class DummyData{
                         "label":"L"
                     },{
                         "type":"other",
-                        "title":"Configuration Title",
-                        "value":"value1",
-                        "label":"label1"
+                        "title":"cloth",
+                        "value":"cotton",
+                        "label":"cotton"
                     }],
                     "price":"€ 150,99"
                 },{
@@ -202,9 +202,9 @@ export default class DummyData{
                         "label":"XL"
                     },{
                         "type":"other",
-                        "title":"Configuration Title",
-                        "value":"value1",
-                        "label":"label1"
+                        "title":"cloth",
+                        "value":"cotton",
+                        "label":"cotton"
                     }],
                     "price":"€ 150,99"
                 }
