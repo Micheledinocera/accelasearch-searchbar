@@ -15,8 +15,9 @@ import RadioGroupItem from './components/RadioGroupItem.jsx'
 import SliderItem from './components/SliderItem.jsx';
 import CheckboxItem from './components/CheckboxItem.jsx';
 import RatingItem from './components/RatingItem.jsx';
+import GridItem from './components/GridItem.jsx';
 // import Input from 'react-speech-recognition-input';
-// import SpeechRecognition from 'react-speech-recognition';
+import SpeechRecognition from 'react-speech-recognition';
 // import { VoicePlayer, VoiceRecognition } from 'react-voice-components'
 import { ReactMic } from 'react-mic';
 import SettingItem from './models/SettingItem.jsx'
@@ -47,20 +48,20 @@ class App extends React.Component {
     // this.barWidth=parseInt(this.props.barWidth,10);
     this.url = 'https://randomapi.com/api/wtue8jke?key=V0N1-X5TM-Z9BQ-JGQR&results=25';
     this.secondUrl = 'http://localhost:8080/api/react?value=a';
-    // const SpeechRecognition = window.SpeechRecognition
-    //   || window.webkitSpeechRecognition
-    //   || window.mozSpeechRecognition
-    //   || window.msSpeechRecognition
-    //   || window.oSpeechRecognition
-    //this.recognition = new SpeechRecognition();
-    /* en-US, en-GB, es-ES, fr-FR, it-IT, de-DE, ja-JP, pt-BR, zh-CN */
-    //this.recognition.lang="it-IT";
-    // this.recognition.addEventListener('result',  (value) => {
-    //   this.setState({ startRecognition: false });
-    //   $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
-    //   this.closeSearchPanel();
-    //   this.handleChange();
-    // })
+    const SpeechRecognition = window.SpeechRecognition
+      || window.webkitSpeechRecognition
+      || window.mozSpeechRecognition
+      || window.msSpeechRecognition
+      || window.oSpeechRecognition
+    this.recognition = new SpeechRecognition();
+    /*  en-US, en-GB, es-ES, fr-FR, it-IT, de-DE, ja-JP, pt-BR, zh-CN */
+    this.recognition.lang="it-IT";
+    this.recognition.addEventListener('result',  (value) => {
+      this.setState({ startRecognition: false });
+      $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
+      this.closeSearchPanel();
+      this.handleChange();
+    })
     this.handleChange = this.handleChange.bind(this);
     this.showLayer = this.showLayer.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
@@ -92,7 +93,7 @@ class App extends React.Component {
  }
 
 handleChange() {
-  var data=DummyData.getDummyProducts();
+  var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
   // var data={results:[]};
   this.setState({data:data.results});
   this.setActiveFilters();
@@ -129,7 +130,7 @@ handleChange() {
 
 showLayer() {
   this.websiteSearchBar.blur();
-  var data=DummyData.getDummyProducts();
+  var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
   // var data={results:[]};
   this.setState({data:data.results});
   this.setActiveFilters();
@@ -309,6 +310,11 @@ radioSelectedhandler(value,item){
   this.setItemValue(item);
 }
 
+gridSelectedhandler(value,item){
+  item.setSelectedValue(value.target.innerText);
+  this.setItemValue(item);
+}
+
 closePanel() {
   $('#ittweb-accelasearch-bar-container').css('opacity','0');
   setTimeout(() => $('#ittweb-accelasearch-bar-container').css('display','none'),100);
@@ -343,12 +349,12 @@ renderIcon(){
 
 voiceRecognize(){
   if (this.state.startRecognition){
-    // this.recognition.stop();
+    this.recognition.stop();
     this.closeSearchPanel();
   } else {
     this.openSearchPanelHalf();
     $('.sound-wave').css('display','block');
-    // this.recognition.start();
+    this.recognition.start();
   }
   this.setState({startRecognition:!this.state.startRecognition})
 }
@@ -380,12 +386,12 @@ render() {
         <div className="search-bar-container">
           <input className="search-bar" type="text" id="ittweb-accelasearch-bar-layer"/>
           <FontIcon onClick={() => this.voiceRecognize()} className="material-icons mic">{this.state.startRecognition?"mic_off":"mic"}</FontIcon>
-          <ReactMic
+          {/*<ReactMic
             record={this.state.startRecognition}
             className="sound-wave"
             onStop={this.onStopRecording}
             strokeColor="#4f8fed"
-            backgroundColor="#FFFFFF" />
+          backgroundColor="#FFFFFF" />*/}
         </div>
       </div>
       <div className="layer-container">
@@ -406,20 +412,24 @@ render() {
                       //     key={item.title + i} title={item.title} theme={this.muiTheme} type={item.type} sliderValue={item.selectedValue} minMax={item.values} handleAfterChangeSlider={(value) => this.handleAfterChangeSlider(value,item)} handleChangeSlider={(value) => this.handleChangeSlider(value,item)}/>
                       // </Panel>
                     case SettingItem.TYPE_RANGE:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} >
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true}>
                         <SliderItem
                           key={item.title + i} title={item.title} theme={this.muiTheme} type={item.type} sliderValue={item.selectedValue} minMax={item.values} handleAfterChangeSlider={(value) => this.handleAfterChangeSlider(value,item)} handleChangeSlider={(value) => this.handleChangeSlider(value,item)}/>
                       </Panel>
                     case SettingItem.TYPE_CHECKBOX:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} > <CheckboxItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue!==undefined && item.selectedValue.length===item.values.length?"none":""}}> <CheckboxItem 
                         key={item.title + i} title={item.title} labels={item.values} value={item.selectedValue} clickHandler={(value,label) => this.checkboxHandler(value, label,item)}/>
                         </Panel>
                     case SettingItem.TYPE_RADIO:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} > <RadioGroupItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue?"none":""}}> <RadioGroupItem 
                         key={item.title + i} title={item.title} values={item.values} selectedValue={item.selectedValue} radioSelectedhandler={(value) => this.radioSelectedhandler(value,item)}/>  
                         </Panel>
+                    case SettingItem.TYPE_GRID:
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue?"none":""}}> <GridItem 
+                        key={item.title + i} title={item.title} values={item.values} selectedValue={item.selectedValue} gridSelectedhandler={(value) => this.gridSelectedhandler(value,item)}/>  
+                        </Panel>
                     case SettingItem.TYPE_RATING:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} > <RatingItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true}> <RatingItem 
                         key={item.title + i} title={item.title} theme={this.muiTheme} selectedValue={item.selectedValue} ratingSelectedhandler={(value) => this.ratingSelectedhandler(value,item)}/>
                         </Panel>
                     default:
@@ -442,8 +452,8 @@ render() {
             ) }
           </div>
           <HorizontalScroll mostSearched={this.state.mostSearchedCategories.filter((item)=>item.title===this.state.selectedHint)[0].values} clickHandler={this.horizontalClick}/>
-          <div className="maybe-label"> Forse cercavi</div>
-          <HorizontalScroll mostSearched={this.state.maybeLookingFor} clickHandler={this.horizontalClick} />
+          {/*<div className="maybe-label"> Forse cercavi</div>
+          <HorizontalScroll mostSearched={this.state.maybeLookingFor} clickHandler={this.horizontalClick} />*/}
           <div className="results-container-header">
             <div className="results-number"> {this.state.data.length} </div>
             <div className="results-label"> Results </div>

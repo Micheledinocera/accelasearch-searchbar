@@ -2,6 +2,7 @@ import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import SettingItem from '../models/SettingItem'
 import Slider from "react-slick";
+import FontIcon from 'material-ui/FontIcon';
 import $ from 'jquery';
 
 export default class ProductListItem extends React.Component {
@@ -20,6 +21,7 @@ export default class ProductListItem extends React.Component {
         this.checkConfigutrationClassName = this.checkConfigutrationClassName.bind(this);
         this.configurationClick = this.configurationClick.bind(this);
         this.configurations=[];
+        this.removeIcon=<FontIcon onClick={() => this.clickHandler()} className="material-icons close">close</FontIcon>;
     }
 
     buttonClick(event){
@@ -38,11 +40,11 @@ export default class ProductListItem extends React.Component {
 
     clickHandler(){
         this.setState({selected:!this.state.selected});
-    }
+    }       
 
     renderVariant(){
         return this.props.product.subProducts.map((item,index,array) => 
-            <div className={this.state.selected?"selected sub-products product-list-item card":"sub-products product-list-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.clickHandler} ref={(node) => {
+            <div className={this.state.selected?"selected sub-products product-list-item card":"sub-products product-list-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?null:this.clickHandler} ref={(node) => {
                 if (node) {
                   node.style.setProperty("margin-top", -10-5*index+"px", "important");
                   node.style.setProperty("margin-left", 40-5*index+"px", "important");
@@ -92,7 +94,8 @@ export default class ProductListItem extends React.Component {
     }
 
     renderConfigurable(){
-        return <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.clickHandler}> 
+        return <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?null:this.clickHandler}> 
+        {this.removeIcon}
         <div className="not-selected-container">
             <img className="image" src={this.props.product.image} alt=""/>
             <div className="info-container">
@@ -116,7 +119,7 @@ export default class ProductListItem extends React.Component {
                     </div>
                     {
                         this.state.subProduct!==null?
-                        <button className="cart-button" onClick={this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?null:this.buttonClick}> {this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?'Show Details':'Add To Cart'} </button>:
+                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>:
                         <button className="cart-button disabled" onClick={(event)=>event.stopPropagation()}> Complete Configuration </button>
                     }
                 </div>
@@ -274,7 +277,9 @@ export default class ProductListItem extends React.Component {
 
     renderCards(){
         return this.props.product.subProducts.map((item,index,array) => 
-            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.clickHandler}> 
+            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?null:this.clickHandler}> 
+                {this.removeIcon}
+                <div className="product-counter"> {(index+1)+"/"+array.length}</div>
                 <div className="name"> {this.props.product.name} </div>
                 <StarRatingComponent 
                     name="rate1" 
@@ -303,12 +308,16 @@ export default class ProductListItem extends React.Component {
     render() {
         var settings = {
             dots: true,
-            infinite: false
+            arrows: false,
+            infinite: false,
+            slidesToShow: 1,
+            centerMode: true
           };
         return (
         !this.state.selected || this.props.product.subProducts.length===0?
         <div> { !this.state.selected?this.renderVariant():null }
-        <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+        <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?null:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+            {this.removeIcon}
             <div className="not-selected-container">
                 <img className="image" src={this.props.product.image} alt=""/>
                 <div className="info-container">
@@ -330,7 +339,7 @@ export default class ProductListItem extends React.Component {
                             <div className="secondary-price strikediag"> {this.props.product.price} </div>
                             <div className="price"> {this.props.product.price} </div>
                         </div>
-                        <button className="cart-button" onClick={this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?null:this.buttonClick}> {this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected?'Show Details':'Add To Cart'} </button>
+                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>
                     </div>
                 </div>
             </div>

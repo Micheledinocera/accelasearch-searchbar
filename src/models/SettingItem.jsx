@@ -9,6 +9,7 @@ export default class SettingItem {
     static TYPE_RADIO="radio";
     static TYPE_SLIDER="slider";
     static TYPE_RANGE="range";
+    static TYPE_GRID="grid";
     static TYPE_RATING="rating";
     static TYPE_SIMPLE="simple";
     static TYPE_GROUP="group";
