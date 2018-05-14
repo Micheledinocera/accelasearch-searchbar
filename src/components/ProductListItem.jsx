@@ -308,6 +308,8 @@ export default class ProductListItem extends React.Component {
     }
                      
     buttonLabel(){
+        if(this.props.product.with_option)
+            return 'To product details';
         if(this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected)
             return 'Configure Product';
         if(this.props.product.type===SettingItem.TYPE_GROUP && !this.state.selected)
@@ -327,7 +329,7 @@ export default class ProductListItem extends React.Component {
         return (
         !this.state.selected || this.props.product.subProducts.length===0?
         <div> { !this.state.selected?this.renderVariant():null }
-        <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+        <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected || this.props.product.with_option?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
             {this.removeIcon}
             <div className="not-selected-container">
                 <img className="image" src={this.props.product.image} alt=""/>
@@ -350,7 +352,7 @@ export default class ProductListItem extends React.Component {
                             <div className="secondary-price strikediag"> {this.props.product.price} </div>
                             <div className="price"> {this.props.product.price} </div>
                         </div>
-                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {this.buttonLabel()} </button>
+                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.props.product.with_option?()=>{window.location = this.props.product.link}:this.buttonClick}> {this.buttonLabel()} </button>
                     </div>
                 </div>
             </div>

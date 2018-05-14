@@ -21,6 +21,7 @@ import SpeechRecognition from 'react-speech-recognition';
 // import { VoicePlayer, VoiceRecognition } from 'react-voice-components'
 import { ReactMic } from 'react-mic';
 import SettingItem from './models/SettingItem.jsx'
+import Labels from './models/Labels.jsx'
 import DummyData from './DummyData.jsx'
 import $ from 'jquery';
 import Collapse, { Panel } from 'rc-collapse';
@@ -64,6 +65,7 @@ class App extends React.Component {
       this.closeSearchPanel();
       this.handleChange();
     })
+    this.labels=Labels.getLabels(document.documentElement.lang);
     this.handleChange = this.handleChange.bind(this);
     this.showLayer = this.showLayer.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
@@ -331,9 +333,9 @@ renderActiveFilters(){
     return(
       <div className="active-filters-container">
         {/*removeIcon*/}
-        <div className="remove-active-filters" onClick={() => this.removeAllActiveFilters()}> Remove Active Filters </div>
+        <div className="remove-active-filters" onClick={() => this.removeAllActiveFilters()}> {this.labels["remove_active_filters"]} </div>
         <Collapse defaultActiveKey="0">
-          <Panel className="active-filters-header" header={"Active Filters (" + this.state.activeFilters.length + ")"} >
+          <Panel className="active-filters-header" header={this.labels["active_filters"]+" (" + this.state.activeFilters.length + ")"} >
             {this.state.activeFilters.map((item,i) => {
               return <ActiveFilterItem key={item.label + i} theme={this.muiThememuiTheme} index={i} title={item.label} value={item.value} type={item.type} activeFilterClick={() => this.activeFilterClick(item)}/>
             })}
@@ -412,7 +414,7 @@ render() {
         <div className={this.state.filtersVisibility?"filter-container show":"filter-container hide"}>
           <div className="filter-overlay">
             { removeIconWhite }
-            <div className="filter-title"> Filters </div>
+            <div className="filter-title"> {this.labels["filters"]} </div>
             <div className="center-column">
               {this.renderActiveFilters()}
               <div className="filter-selection">
@@ -461,8 +463,8 @@ render() {
           <div className="hint"> 
             { this.state.mostSearchedCategories.map(
               (item,index)=> <span className={this.state.selectedHint===item.title?"selected":""} onClick={(event)=>{
-                this.setState({selectedHint:event.target.innerText.trim()});
-              }}> {item.title} </span>
+                this.setState({selectedHint:item.title});
+              }}> {this.labels[item.title]} </span>
             ) }
           </div>
           <HorizontalScroll mostSearched={this.state.mostSearchedCategories.filter((item)=>item.title===this.state.selectedHint)[0].values} clickHandler={this.horizontalClick}/>
@@ -518,8 +520,8 @@ render() {
           }
           </div>:this.state.isWriting?
           <div>
-            <div className="no-results-label"> Siamo spiacenti ma non è stato trovato nessun risultato coerente. </div>
-            <div className="maybe-label-no-results"> Forse cercavi: </div>
+            <div className="no-results-label"> {this.labels["no_results"]} </div>
+            <div className="maybe-label-no-results"> {this.labels["maybe_looking"]+":"} </div>
             <div className="maybe-value"> {this.state.maybeLookingFor.map(
               (item,index,array) => <span className="maybe-value-item" onClick={this.horizontalClick}> {item + (index+1===array.length?"":",")} </span>
             )}
