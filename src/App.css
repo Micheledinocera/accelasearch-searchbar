@@ -419,6 +419,7 @@ button.toggle-list{
   /* transition: all .5s cubic-bezier(0, .52, 0, 1); */
   width: 100%;
   z-index: 1002;
+  height: 100%;
 } 
 
 .filter-container.show {
@@ -434,6 +435,8 @@ button.toggle-list{
   opacity:1 !important;
   background-color: white !important;
   padding-bottom: 50px;
+  height: 100%;
+  overflow: auto;
 }
 
 .center-column{
@@ -704,7 +707,7 @@ button.toggle-list{
   width:50%;
 }
 
-.single-column .card-footer .price{
+.single-column .card-footer .price,.double-column .selected .card-footer .price{
   width: 75%;
   font-size: 40px;
   font-weight: 600;
@@ -731,12 +734,17 @@ button.toggle-list{
   margin-left: 30px;
 }
 
-.selected .card-footer .secondary-price{
+.slick-slide .card-footer .secondary-price{
   width: 25% !important;
 }
 
 .selected .card-footer .secondary-price{
+  margin-left: 70px;
   width: 50% !important;
+}
+
+.selected .product-grid-item .card-footer .secondary-price{
+  width: 25% !important;
 }
 
 .product-list-item .secondary-price{
@@ -767,7 +775,7 @@ button.toggle-list{
   width: 50%;
   font-size: 25px;
   font-weight: 600;
-  height: 40px;
+  /* height: 40px; */
   background: white;
   border-radius: 10px;
   border: solid 2px black;

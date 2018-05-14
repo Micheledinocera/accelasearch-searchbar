@@ -21,6 +21,7 @@ export default class ProductGridItem extends React.Component {
         this.checkSubProductConfiguration = this.checkSubProductConfiguration.bind(this);
         this.checkConfigutrationClassName = this.checkConfigutrationClassName.bind(this);
         this.configurationClick = this.configurationClick.bind(this);
+        this.buttonLabel = this.buttonLabel.bind(this);
         this.configurations=[];
         this.removeIcon=<FontIcon onClick={this.clickHandler} className="material-icons close">close</FontIcon>;
     }
@@ -40,6 +41,7 @@ export default class ProductGridItem extends React.Component {
     }
 
     clickHandler(event){
+        event.stopPropagation();
         var notSelectedItem;
         var parentPairContainer;
         // var parentProductItem;
@@ -126,7 +128,7 @@ export default class ProductGridItem extends React.Component {
 
     renderCards(){
         return this.props.product.subProducts.map((item,index,array) => 
-            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?null:this.clickHandler}> 
+            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?()=>{window.location = item.link}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="product-counter"> {(index+1)+"/"+array.length}</div>
                 <div className="name"> {this.props.product.name} </div>
@@ -156,7 +158,7 @@ export default class ProductGridItem extends React.Component {
 
     renderConfigurable(){
         return <div className={"single-product-container "+this.setClassName()} style={{width: this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?"100%":"50%"}}>
-            <div className="product-grid-item card" onClick={this.state.selected?null:this.clickHandler}> 
+            <div className="product-grid-item card" onClick={this.state.selected?()=>{window.location = this.props.product.link}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="name"> {this.props.product.name} </div>
                 <StarRatingComponent 
@@ -350,6 +352,15 @@ export default class ProductGridItem extends React.Component {
         return check;
     }
 
+    buttonLabel(){
+        if(this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected)
+            return 'Configure Product';
+        if(this.props.product.type===SettingItem.TYPE_GROUP && !this.state.selected)
+            return 'Show Detail';
+        else
+            return 'Add To Cart';
+    }
+
     render() {
         var settings = {
             dots: true,
@@ -362,7 +373,7 @@ export default class ProductGridItem extends React.Component {
             !this.state.selected || this.props.product.subProducts.length===0?
             <div className={"single-product-container "+this.setClassName()} style={{width: this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?"100%":"50%"}}>
                 { this.renderVariant() }
-                <div className="product-grid-item card" onClick={this.state.selected?null:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+                <div className="product-grid-item card" onClick={this.state.selected?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
                     {this.removeIcon}
                     <div className="name"> {this.props.product.name} </div>
                     <StarRatingComponent 
@@ -387,7 +398,7 @@ export default class ProductGridItem extends React.Component {
                             <div className="secondary-price strikediag"> {this.props.product.price} </div>
                             <div className="price"> {this.props.product.price} </div>
                         </div>
-                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>
+                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {this.buttonLabel()} </button>
                     </div>
                 </div>
             </div>:this.props.product.type===SettingItem.TYPE_CONFIGURABLE?

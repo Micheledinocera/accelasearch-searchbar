@@ -31,6 +31,7 @@ class App extends React.Component {
     this.state = {
       startRecognition: false,
       isSearching: false,
+      isWriting: false,
       mostSearchedCategories:DummyData.getDummyMostSearched(),
       maybeLookingFor:DummyData.getDummyMaybeLooking(),
       filtersVisibility: false,
@@ -42,6 +43,7 @@ class App extends React.Component {
       data : [],
       activeKeys:[],
       orderChosen:SettingItem.ORDER_LIST[0],
+      minChars: DummyData.getMinChars(),
       banner_type: SettingItem.BANNER_TYPE_SMALL,
       banner: DummyData.getBanner()
     }
@@ -93,49 +95,48 @@ class App extends React.Component {
  }
 
 handleChange() {
-  var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
-  // var data={results:[]};
-  this.setState({data:data.results});
-  this.setActiveFilters();
-  //fetch(this.secondUrl)
-  //  .then(result=>{
-  //    if(result.status !== 403)
-  //      return result.json();
-  //    else 
-  //      return [];
-  //  })
-  //  .then(items=>{
-  //    if(items === [])
-  //      this.setState({data:[]});
-  //    else{
-  //      this.setState({data:items.data.results})
-  //    }
-  //  });
-  this.setState({searchValue: $('#ittweb-accelasearch-bar-layer')[0].value});
-  // if(this.websiteSearchBar[0].value.length>0){
-  // $('#ittweb-accelasearch-bar-container').addClass('appear');
-  // } 
-  // else {
-  //   $('#ittweb-accelasearch-bar-container').css('opacity','0');
-  //   $('#ittweb-accelasearch-bar-container').css('display','none');
-  //   // $('#ittweb-accelasearch-bar-container').removeClass('appear');
-  // }
-  this.setState({banner: DummyData.getBanner()})
-  if(this.state.banner!==""){
-    $(".banner-value").html(this.state.banner);
-    $(".banner").css("display","block");
+  if($('#ittweb-accelasearch-bar-layer')[0].value!==undefined && $('#ittweb-accelasearch-bar-layer')[0].value.length>0)
+    this.setState({isWriting:true});
+  else
+    this.setState({isWriting:false});
+  if($('#ittweb-accelasearch-bar-layer')[0].value.length>=this.state.minChars){
+    var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
+    this.setState({data:data.results});
+    this.setActiveFilters();
+    //fetch(this.secondUrl)
+    //  .then(result=>{
+    //    if(result.status !== 403)
+    //      return result.json();
+    //    else 
+    //      return [];
+    //  })
+    //  .then(items=>{
+    //    if(items === [])
+    //      this.setState({data:[]});
+    //    else{
+    //      this.setState({data:items.data.results})
+    //    }
+    //  });
+    this.setState({searchValue: $('#ittweb-accelasearch-bar-layer')[0].value});
+    this.setState({banner: DummyData.getBanner()})
+    if(this.state.banner!==""){
+      $(".banner-value").html(this.state.banner);
+      $(".banner").css("display","block");
+    }
+    this.forceUpdate();
   }
-  this.forceUpdate();
 }
 
 showLayer() {
-  this.websiteSearchBar.blur();
-  var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
-  // var data={results:[]};
-  this.setState({data:data.results});
+  //this.websiteSearchBar.blur();
+  //var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
+  this.setState({data:{results:[]}});
   this.setActiveFilters();
   $('#ittweb-accelasearch-bar-container').css('display','flex');
-  setTimeout(() => $('#ittweb-accelasearch-bar-container').css('opacity','1'),100);
+  setTimeout(() => {
+    $('#ittweb-accelasearch-bar-container').css('opacity','1');
+    $('#ittweb-accelasearch-bar-layer').focus()
+  },100);
 }
 
 setItemValue(item){
@@ -189,6 +190,7 @@ horizontalClick(event){
   value= value.replace(",", "");
   this.setState({searchValue:value});
   $("#ittweb-accelasearch-bar-layer").val(value);
+  this.handleChange();
 }
 
 ratingSelectedhandler(value,item){
@@ -262,26 +264,29 @@ openSearchLayer(event){
 }
 
 openSearchPanel(){
-  $('.header').css('height','100vh');
+  //$('.header').css('height','100%');
   $('.filter').css('display','none');
   $('.horizontal-scroll').css('display','none');
-  $('.search-bar-container').css('top','50%');
+  $('.hint').css('display','none');
+  // $('.search-bar-container').css('top','50%');
   this.setState({isSearching:true});
 }
 
 openSearchPanelHalf(){
-  $('.header').css('height','100vh');
+  //$('.header').css('height','100%');
   $('.filter').css('display','none');
   $('.horizontal-scroll').css('display','none');
-  $('.search-bar-container').css('top','25%');
+  $('.hint').css('display','none');
+  //$('.search-bar-container').css('top','25%');
   $('#ittweb-accelasearch-bar-layer').prop('disabled',true);
   this.setState({isSearching:true});
 }
 
 closeSearchPanel(){
-  $('.header').css('height','100px');
+  //$('.header').css('height','100px');
   $('.filter').css('display','flex');
   $('.horizontal-scroll').css('display','flex');
+  $('.hint').css('display','flex');
   $('.search-bar-container').css('top','0');
   $('#ittweb-accelasearch-bar-layer').prop('disabled',false);
   $('.sound-wave').css('display','none');
@@ -340,11 +345,11 @@ renderActiveFilters(){
 
 renderIcon(){
   var removeIcon=<FontIcon onClick={() => this.closePanel()} className="material-icons close">close</FontIcon>;
-  var removeIconSearchPanel=<FontIcon onClick={() =>this.closeSearchPanel()} className="material-icons close search">close</FontIcon>;
-  if(this.state.isSearching)
-    return removeIconSearchPanel;
-  else 
-    return removeIcon;
+  // var removeIconSearchPanel=<FontIcon onClick={() =>this.closeSearchPanel()} className="material-icons close search">close</FontIcon>;
+  // if(this.state.isSearching)
+  //   return removeIconSearchPanel;
+  // else 
+  return removeIcon;
 }
 
 voiceRecognize(){
@@ -367,10 +372,11 @@ render() {
   if(this.state.data === undefined){
     this.setState({data:[]});
   }
-  var removeIconWhite=<FontIcon style={{ color:"white"}} onClick={() => this.setState({filtersVisibility: false})} className="material-icons close">close</FontIcon>;
+  var removeIconWhite=<FontIcon style={{ color:"white"}} onClick={() => {this.setState({filtersVisibility: false});$('#ittweb-accelasearch-bar-container').css('overflow',"auto");}} className="material-icons close">close</FontIcon>;
   var filterIcon=<div className="filter" onClick={() => {
     this.setState({filtersVisibility: true});
     window.scrollTo(0,0);
+    $('#ittweb-accelasearch-bar-container').css('overflow',"hidden");
     }}>
     <div className="Oval"> <span> {this.state.activeFilters.length} </span> </div>
     <FontIcon className={"material-icons filter-icon"}>filter_list</FontIcon>
@@ -385,7 +391,15 @@ render() {
         { filterIcon }
         <div className="search-bar-container">
           <input className="search-bar" type="text" id="ittweb-accelasearch-bar-layer"/>
-          <FontIcon onClick={() => this.voiceRecognize()} className="material-icons mic">{this.state.startRecognition?"mic_off":"mic"}</FontIcon>
+          {this.state.isWriting?
+            <FontIcon onClick={() => {
+              $("#ittweb-accelasearch-bar-layer").val("");
+              this.handleChange();
+              this.openSearchPanel();
+              $("#ittweb-accelasearch-bar-layer").focus();
+            }} className="material-icons mic">cancel</FontIcon>:
+            <FontIcon onClick={() => this.voiceRecognize()} className="material-icons mic">{this.state.startRecognition?"mic_off":"mic"}</FontIcon>
+          }
           {/*<ReactMic
             record={this.state.startRecognition}
             className="sound-wave"
@@ -502,7 +516,7 @@ render() {
               {this.state.data.map((product, i) => <ProductListItem theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductListItem>)}
             </div>
           }
-          </div>:
+          </div>:this.state.isWriting?
           <div>
             <div className="no-results-label"> Siamo spiacenti ma non è stato trovato nessun risultato coerente. </div>
             <div className="maybe-label-no-results"> Forse cercavi: </div>
@@ -510,7 +524,7 @@ render() {
               (item,index,array) => <span className="maybe-value-item" onClick={this.horizontalClick}> {item + (index+1===array.length?"":",")} </span>
             )}
             </div>
-          </div>
+          </div>:null
         }
         </div>
       </div>

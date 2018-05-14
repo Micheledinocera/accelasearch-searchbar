@@ -16,12 +16,13 @@ export default class ProductListItem extends React.Component {
         this.configurationLength=this.props.product.subProducts.length>0 && this.props.product.subProducts[0].configuration!=null?this.props.product.subProducts[0].configuration.length:0;
         this.clickHandler=this.clickHandler.bind(this);
         this.buttonClick = this.buttonClick.bind(this);
+        this.buttonLabel = this.buttonLabel.bind(this);
         this.retrieveConfigurations = this.retrieveConfigurations.bind(this);
         this.checkSubProductConfiguration = this.checkSubProductConfiguration.bind(this);
         this.checkConfigutrationClassName = this.checkConfigutrationClassName.bind(this);
         this.configurationClick = this.configurationClick.bind(this);
         this.configurations=[];
-        this.removeIcon=<FontIcon onClick={() => this.clickHandler()} className="material-icons close">close</FontIcon>;
+        this.removeIcon=<FontIcon onClick={this.clickHandler} className="material-icons close">close</FontIcon>;
     }
 
     buttonClick(event){
@@ -38,7 +39,8 @@ export default class ProductListItem extends React.Component {
             ,1000)
     }
 
-    clickHandler(){
+    clickHandler(event){
+        event.stopPropagation();
         this.setState({selected:!this.state.selected});
     }       
 
@@ -94,7 +96,7 @@ export default class ProductListItem extends React.Component {
     }
 
     renderConfigurable(){
-        return <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?null:this.clickHandler}> 
+        return <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?()=>{window.location = this.props.product.link}:this.clickHandler}> 
         {this.removeIcon}
         <div className="not-selected-container">
             <img className="image" src={this.props.product.image} alt=""/>
@@ -277,7 +279,7 @@ export default class ProductListItem extends React.Component {
 
     renderCards(){
         return this.props.product.subProducts.map((item,index,array) => 
-            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?null:this.clickHandler}> 
+            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?()=>{window.location = item.link}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="product-counter"> {(index+1)+"/"+array.length}</div>
                 <div className="name"> {this.props.product.name} </div>
@@ -305,6 +307,15 @@ export default class ProductListItem extends React.Component {
         )
     }
                      
+    buttonLabel(){
+        if(this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected)
+            return 'Configure Product';
+        if(this.props.product.type===SettingItem.TYPE_GROUP && !this.state.selected)
+            return 'Show Detail';
+        else
+            return 'Add To Cart';
+    }
+
     render() {
         var settings = {
             dots: true,
@@ -316,7 +327,7 @@ export default class ProductListItem extends React.Component {
         return (
         !this.state.selected || this.props.product.subProducts.length===0?
         <div> { !this.state.selected?this.renderVariant():null }
-        <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?null:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+        <div className={this.state.selected?"selected product-list-item card":"product-list-item card"} onClick={this.state.selected?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
             {this.removeIcon}
             <div className="not-selected-container">
                 <img className="image" src={this.props.product.image} alt=""/>
@@ -339,7 +350,7 @@ export default class ProductListItem extends React.Component {
                             <div className="secondary-price strikediag"> {this.props.product.price} </div>
                             <div className="price"> {this.props.product.price} </div>
                         </div>
-                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>
+                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {this.buttonLabel()} </button>
                     </div>
                 </div>
             </div>

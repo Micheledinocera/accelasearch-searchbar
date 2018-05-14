@@ -41,6 +41,8 @@ export default class DummyData{
                 {name:"item32asd",children:[]}]
     }];
 
+    static minChars=3;
+    
     static bannerLarge='<html><head><title></title></head><body><p style="background-color:blue;height:25vh"><img alt="" src="https://picsum.photos/200/200?random" style="height:182px; width:200px" />BANNER</p></body></html>';
     static bannerSmall='<html><head><title></title></head><body><p style="background-color:blue;height:8vh"><img alt="" src="https://picsum.photos/100/100?random" style="height:100px; width:100px" />BANNER</p></body></html>';
     static sliderValues1 = {min:0,max:100};
@@ -76,7 +78,7 @@ export default class DummyData{
             "name":"Lou Okuneva",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2,
@@ -85,7 +87,7 @@ export default class DummyData{
                 {
                     "name":"Lou Okuneva",
                     "category":"category2",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
@@ -94,7 +96,7 @@ export default class DummyData{
                 },{
                     "name":"Lou Okuneva",
                     "category":"category2",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
@@ -103,7 +105,7 @@ export default class DummyData{
                 },{
                     "name":"Lou Okuneva",
                     "category":"category2",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
@@ -112,7 +114,7 @@ export default class DummyData{
                 },{
                     "name":"Lou Okuneva",
                     "category":"category2",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
@@ -121,7 +123,7 @@ export default class DummyData{
                 },{
                     "name":"Lou Okuneva",
                     "category":"category2",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
@@ -130,7 +132,7 @@ export default class DummyData{
                 },{
                     "name":"Lou Okuneva",
                     "category":"category2",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
@@ -146,14 +148,14 @@ export default class DummyData{
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2,
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "type":SettingItem.TYPE_CONFIGURABLE,
             "subProducts":[
                 {
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -178,7 +180,7 @@ export default class DummyData{
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"2Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -203,7 +205,7 @@ export default class DummyData{
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"3Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -228,7 +230,7 @@ export default class DummyData{
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"4Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -256,7 +258,7 @@ export default class DummyData{
             "name":"Noble Olson",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2,
@@ -267,7 +269,7 @@ export default class DummyData{
             "name":"Dr. Magdalena Lemke",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2,
@@ -278,7 +280,7 @@ export default class DummyData{
             "name":"Wilhelm Hermiston V",
             "category":"category1",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2,
@@ -289,7 +291,7 @@ export default class DummyData{
             "name":"Miss Carolina Kuhn",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2.5,
@@ -300,7 +302,7 @@ export default class DummyData{
             "name":"Dr. Adan Jones",
             "category":"category3",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":1,
@@ -311,7 +313,7 @@ export default class DummyData{
             "name":"Hailey Russel",
             "category":"category1",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":5,
@@ -322,7 +324,7 @@ export default class DummyData{
             "name":"Korey Lesch",
             "category":"category3",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":2,
@@ -332,7 +334,7 @@ export default class DummyData{
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -341,7 +343,7 @@ export default class DummyData{
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -350,7 +352,7 @@ export default class DummyData{
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
-                    "link":"https://google.com",
+                    "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
                     "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
                     "rating":2,
@@ -362,7 +364,7 @@ export default class DummyData{
             "name":"Warren Gaylord",
             "category":"category3",
             "image":"https://picsum.photos/300/300?random",
-            "link":"https://google.com",
+            "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
             "desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis. Philosophi autem in suis lectulis plerumque moriuntur. Sapiens autem semper beatus est et est aliquando in dolore; Duo Reges: constructio interrete. Facile est hoc cernere in primis puerorum aetatulis. Incommoda autem et commoda-ita enim estmata et dustmata appello-communia esse voluerunt, paria noluerunt. Potius inflammat, ut coercendi magis quam dedocendi esse videantur. Quae qui non vident, nihil umquam magnum ac cognitione dignum amaverunt. Nam, ut sint illa vendibiliora, haec uberiora certe sunt. Inde igitur, inquit, ordiendum est. Quid, si etiam iucunda memoria est praeteritorum malorum?",
             "short_desc":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Qui est in parvis malis.",
             "rating":3,
@@ -457,5 +459,9 @@ export default class DummyData{
 
     static getBanner(){
         return this.bannerSmall;
+    }
+
+    static getMinChars(){
+        return this.minChars;
     }
 }
