@@ -257,7 +257,7 @@ componentWillMount(){
 
 componentDidMount(){
   $('#ittweb-accelasearch-bar-layer').on("keyup",this.handleChange);
-  $('#ittweb-accelasearch-bar-layer').on("keyup",this.openSearchLayer);
+  $('#ittweb-accelasearch-bar-layer').on("keyup focus",this.openSearchLayer);
 }
 
 openSearchLayer(event){
