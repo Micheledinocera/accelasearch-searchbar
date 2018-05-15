@@ -1,6 +1,7 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
 import SettingItem from '../models/SettingItem.jsx';
+import Labels from '../models/Labels.jsx'
 import Slider from "react-slick";
 import FontIcon from 'material-ui/FontIcon';
 import $ from 'jquery';
@@ -15,6 +16,7 @@ export default class ProductGridItem extends React.Component {
             subProduct:null,
             partialConfiguration:[]
         }
+        this.labels=Labels.getLabels(document.documentElement.lang);
         this.configurationLength=this.props.product.subProducts.length>0 && this.props.product.subProducts[0].configuration!=null?this.props.product.subProducts[0].configuration.length:0;
         this.retrieveConfigurations = this.retrieveConfigurations.bind(this);
         this.checkSubProductConfiguration = this.checkSubProductConfiguration.bind(this);
@@ -134,7 +136,7 @@ export default class ProductGridItem extends React.Component {
                 />
                 <img className="image" src={this.props.product.image} alt=""/>
                 <div className="description">
-                    <div className="title"> Description </div>
+                    <div className="title"> {this.labels["desc"]} </div>
                     <div className="value"> {this.props.product.desc} </div>
                 </div>
                 <div className="card-footer">
@@ -166,11 +168,11 @@ export default class ProductGridItem extends React.Component {
                 />
                 <img className="image" src={this.props.product.image} alt=""/>
                 <div className="short_desc">
-                    <div className="title"> Short description </div>
+                    <div className="title"> {this.labels["short_desc"]}</div>
                     <div className="value"> {this.props.product.short_desc} </div>
                 </div>
                 <div className="description">
-                    <div className="title"> Description </div>
+                    <div className="title"> {this.labels["desc"]} </div>
                     <div className="value"> {this.props.product.desc} </div>
                     {this.props.product.type===SettingItem.TYPE_CONFIGURABLE?
                     <div className="configurable">
@@ -386,11 +388,11 @@ export default class ProductGridItem extends React.Component {
                     />
                     <img className="image" src={this.props.product.image} alt=""/>
                     <div className="short_desc">
-                        <div className="title"> Short description </div>
+                        <div className="title"> {this.labels["short_desc"]} </div>
                         <div className="value"> {this.props.product.short_desc} </div>
                     </div>
                     <div className="description">
-                        <div className="title"> Description </div>
+                        <div className="title"> {this.labels["desc"]} </div>
                         <div className="value"> {this.props.product.desc} </div>
                     </div>
                     <div className="card-footer">

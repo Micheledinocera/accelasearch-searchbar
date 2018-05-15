@@ -1062,6 +1062,7 @@ button.toggle-list{
 
 .cart-button.back {
   transform: rotateX(180deg);
+  background-color: #7FC763 !important;
 }
 .rotate .cart-button.back {
   transform: rotateX(0deg);
