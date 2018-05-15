@@ -56,15 +56,18 @@ class App extends React.Component {
       || window.mozSpeechRecognition
       || window.msSpeechRecognition
       || window.oSpeechRecognition
-    this.recognition = new SpeechRecognition();
-    /*  en-US, en-GB, es-ES, fr-FR, it-IT, de-DE, ja-JP, pt-BR, zh-CN */
-    this.recognition.lang="it-IT";
-    this.recognition.addEventListener('result',  (value) => {
-      this.setState({ startRecognition: false });
-      $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
-      this.closeSearchPanel();
-      this.handleChange();
-    })
+    this.isVoiceRecognitionSupported=SpeechRecognition!==undefined;
+    if(this.isVoiceRecognitionSupported){
+      this.recognition = new SpeechRecognition();
+      /*  en-US, en-GB, es-ES, fr-FR, it-IT, de-DE, ja-JP, pt-BR, zh-CN */
+      this.recognition.lang="it-IT";
+      this.recognition.addEventListener('result',  (value) => {
+        this.setState({ startRecognition: false });
+        $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
+        this.closeSearchPanel();
+        this.handleChange();
+      })
+    }
     this.labels=Labels.getLabels(document.documentElement.lang);
     this.handleChange = this.handleChange.bind(this);
     this.showLayer = this.showLayer.bind(this);
@@ -400,7 +403,7 @@ render() {
               this.openSearchPanel();
               $("#ittweb-accelasearch-bar-layer").focus();
             }} className="material-icons mic">cancel</FontIcon>:
-            <FontIcon onClick={() => this.voiceRecognize()} className="material-icons mic">{this.state.startRecognition?"mic_off":"mic"}</FontIcon>
+            <FontIcon onClick={this.isVoiceRecognitionSupported?() => this.voiceRecognize():null} className="material-icons mic">{this.state.startRecognition || !this.isVoiceRecognitionSupported?"mic_off":"mic"}</FontIcon>
           }
           {/*<ReactMic
             record={this.state.startRecognition}
