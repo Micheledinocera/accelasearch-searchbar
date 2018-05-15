@@ -9,7 +9,9 @@ export default class Labels {
         filters:"Filtri",
         active_filters:"Filtri Attivi",
         remove_active_filters:"Rimuovi i filtri attivi",
-        no_results:"Siamo spiacenti ma non è stato trovato nessun risultato coerente."
+        no_results:"Siamo spiacenti ma non è stato trovato nessun risultato coerente.",
+        short_desc:"Descrizione breve",
+        desc:"Descrizione"
     };
     static EN_LABELS={
         categories:"Categories",
@@ -18,7 +20,9 @@ export default class Labels {
         filters:"Filters",
         active_filters:"Active Filters",
         remove_active_filters:"Remove Active Filters",
-        no_results:"We are sorry but no coherent results are found"
+        no_results:"We are sorry but no coherent results are found",
+        short_desc:"Short Description",
+        desc:"Description"
     };
 
     static getLabels(language){

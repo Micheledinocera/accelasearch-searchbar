@@ -253,8 +253,8 @@ componentWillMount(){
 }
 
 componentDidMount(){
-  $('#ittweb-accelasearch-bar-layer').on("change paste keyup",this.handleChange);
-  $('#ittweb-accelasearch-bar-layer').on("change paste keyup focus",this.openSearchLayer);
+  $('#ittweb-accelasearch-bar-layer').on("keyup",this.handleChange);
+  $('#ittweb-accelasearch-bar-layer').on("keyup",this.openSearchLayer);
 }
 
 openSearchLayer(event){

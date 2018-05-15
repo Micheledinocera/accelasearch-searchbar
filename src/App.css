@@ -1,3 +1,7 @@
+:focus{
+  outline: none !important;
+}
+
 center {
   position: relative;
   left: 50%;
@@ -166,7 +170,7 @@ center {
 }
 
 .product-list-item.card {
-  height: 350px;
+  height: 370px;
   margin-top: 100px;
 }
 
@@ -212,7 +216,7 @@ center {
 }
 
 .pair-product-container .card {
-  height: 500px;
+  height: 550px;
 }
 
 .pair-product-container>.selected {
@@ -616,6 +620,8 @@ button.toggle-list{
 .product-list-item:not(.selected)>.not-selected-container>.image{
   width: 200px;
   height: 200px;
+  margin-left: 20px;
+  margin-top: 20px;
 }
 
 .product-list-item:not(.selected)>.image{
@@ -635,23 +641,24 @@ button.toggle-list{
 }
 
 .selected.product-list-item .description>.title,.slick-list .product-grid-item .description>.title{
-  font-size: 26px;
+  font-size: 27px;
+  margin-top: 20px;
   font-weight: 600;
   margin-left: 20px;
 }
 
 .selected.product-list-item .description>.value,.slick-list .product-grid-item .description>.value{
-  margin-top: 10px;
+  margin-top: 20px;
   color: gray;
   margin-left: 20px;
-  font-size: 24px;
+  font-size: 25px;
 }
 
 .short_desc>.title{
-  font-size: 24px;
+  font-size: 25px;
   font-weight: 600;
   margin-left: 20px;
-  margin-top: 4px;
+  margin-top: 15px;
 }
 
 .selected .short_desc{
@@ -659,10 +666,10 @@ button.toggle-list{
 }
 
 .short_desc>.value{
-  margin-top: 6px;
+  margin-top: 10px;
   color: gray;
   margin-left: 20px;
-  font-size: 19px;
+  font-size: 22px;
 }
 
 .product-list-item .card-footer{
@@ -730,7 +737,8 @@ button.toggle-list{
 .card-footer .secondary-price{
   color: gray;
   width: 50%;
-  font-size: 19px;
+  font-size: 23px;
+  margin-bottom: 7px;
   margin-left: 30px;
 }
 
@@ -760,8 +768,8 @@ button.toggle-list{
   margin-left: 75px;
 }
 
-.product-list-item .card-footer>.cart-button{
-  width: 100%;
+.product-list-item .card-footer .cart-button{
+  width: 95%;
   font-size: 30px;
   font-weight: 600;
   height: 40px;
@@ -771,7 +779,7 @@ button.toggle-list{
   cursor: pointer;
 }
 
-.product-grid-item .card-footer>.cart-button{
+.product-grid-item .card-footer .cart-button{
   width: 50%;
   font-size: 25px;
   font-weight: 600;
@@ -885,16 +893,21 @@ button.toggle-list{
 }
 
 .selected .product-grid-item .description>.title{
-  font-size: 26px;
+  font-size: 27px;
+  margin-top: 20px;
   font-weight: 600;
   margin-left: 20px;
 }
 
 .selected .product-grid-item .description>.value{
-  margin-top: 10px;
+  margin-top: 20px;
   color: gray;
   margin-left: 20px;
-  font-size: 24px;
+  font-size: 25px;
+}
+
+.configurable{
+  margin-top: 20px;
 }
 
 .sub-products.product-list-item.card{
@@ -924,7 +937,7 @@ button.toggle-list{
 }
 
 .description{
-  margin-bottom: 100px;
+  margin-bottom: 150px;
 }
 
 .banner{
@@ -1031,8 +1044,30 @@ button.toggle-list{
   font-weight: 600;
 }
 
-.cart-button.disabled{
+.product-list-item.selected .card-footer .cart-button{
+  width:50%;
+}
+
+.cart-button-container .front, .cart-button-container .back{
+  transition: 0.5s;
+  position: absolute; 
+  backface-visibility: hidden;
+  right: 15px;
+  bottom: 15px;
+}
+
+.cart-button.disabled {
   opacity: 0.4;
+}
+
+.cart-button.back {
+  transform: rotateX(180deg);
+}
+.rotate .cart-button.back {
+  transform: rotateX(0deg);
+}
+.rotate .cart-button.front {
+  transform: rotateX(-180deg);
 }
 
 .grid-container,.grid-item-container{

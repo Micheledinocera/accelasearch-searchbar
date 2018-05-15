@@ -15,7 +15,6 @@ export default class ProductListItem extends React.Component {
         }
         this.configurationLength=this.props.product.subProducts.length>0 && this.props.product.subProducts[0].configuration!=null?this.props.product.subProducts[0].configuration.length:0;
         this.clickHandler=this.clickHandler.bind(this);
-        this.buttonClick = this.buttonClick.bind(this);
         this.buttonLabel = this.buttonLabel.bind(this);
         this.retrieveConfigurations = this.retrieveConfigurations.bind(this);
         this.checkSubProductConfiguration = this.checkSubProductConfiguration.bind(this);
@@ -27,16 +26,9 @@ export default class ProductListItem extends React.Component {
 
     buttonClick(event){
         event.stopPropagation();
-        var button=$( event.target );
-        button.html('DONE');
-        button.css('background-color','#5ff442')
-        setTimeout(
-            ()=>
-            {   
-                button.html('Add To Cart');
-                button.css('background-color','white');
-            }
-            ,1000)
+        var button=$( event.target.parentElement );
+        button.toggleClass('rotate');
+        setTimeout(()=>button.toggleClass('rotate'),1000);
     }
 
     clickHandler(event){
@@ -121,7 +113,10 @@ export default class ProductListItem extends React.Component {
                     </div>
                     {
                         this.state.subProduct!==null?
-                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>:
+                        <div className="cart-button-container">
+                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>
+                            <button className="cart-button back"> DONE </button>
+                        </div>:
                         <button className="cart-button disabled" onClick={(event)=>event.stopPropagation()}> Complete Configuration </button>
                     }
                 </div>
@@ -301,7 +296,10 @@ export default class ProductListItem extends React.Component {
                         <div className="secondary-price strikediag"> {this.props.product.price} </div>
                         <div className="price"> {this.props.product.price} </div>
                     </div>
-                    <button className="cart-button" onClick={this.buttonClick}> Add To Cart </button>
+                    <div className="cart-button-container">
+                        <button className="cart-button front" onClick={this.buttonClick}> Add To Cart </button>
+                        <button className="cart-button back"> DONE </button>
+                    </div>
                 </div> 
             </div>
         )
@@ -352,7 +350,10 @@ export default class ProductListItem extends React.Component {
                             <div className="secondary-price strikediag"> {this.props.product.price} </div>
                             <div className="price"> {this.props.product.price} </div>
                         </div>
-                        <button className="cart-button" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.props.product.with_option?()=>{window.location = this.props.product.link}:this.buttonClick}> {this.buttonLabel()} </button>
+                        <div className="cart-button-container">
+                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.props.product.with_option?()=>{window.location = this.props.product.link}:this.buttonClick}> {this.buttonLabel()} </button>
+                            <button className="cart-button back"> DONE </button>
+                        </div>
                     </div>
                 </div>
             </div>
