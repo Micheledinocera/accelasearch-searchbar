@@ -97,6 +97,7 @@ export default class ProductGridItem extends React.Component {
     }
 
     renderVariant(){
+        $('#ittweb-accelasearch-bar-container').css('overflow-y','auto');
         return this.props.product.subProducts.map((item,index,array) => 
             <div className={"sub-products product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?null:this.clickHandler} ref={(node) => {
                 if (node) {
@@ -127,6 +128,7 @@ export default class ProductGridItem extends React.Component {
     } 
 
     renderCards(){
+        $('#ittweb-accelasearch-bar-container').css('overflow-y','hidden');
         return this.props.product.subProducts.map((item,index,array) => 
             <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?()=>{window.location = item.link}:this.clickHandler}> 
                 {this.removeIcon}

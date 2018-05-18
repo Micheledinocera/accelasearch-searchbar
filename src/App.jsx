@@ -248,7 +248,6 @@ removeAllActiveFilters(){
 }
 
 componentWillMount(){
-  window.addEventListener( 'touchmove', function() {})
   this.state.settings.forEach((item,i) =>{
     var tempKeys=this.state.activeKeys;
     tempKeys.push(item.type + item.title + i);
