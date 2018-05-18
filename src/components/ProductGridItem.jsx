@@ -75,6 +75,12 @@ export default class ProductGridItem extends React.Component {
                 notSelectedItem.css("display","none");
             }
         }
+        if(!this.state.selected)
+            $( '#ittweb-accelasearch-bar-container' ).animate({
+                scrollTop: 
+                $( event.target).closest('.card').eq(0).offset().top + $( '#ittweb-accelasearch-bar-container' ).scrollTop() - $(window).height()/5
+                // $( event.target).closest('.card')[0].offsetTop - 100
+            }, 500);
         this.setState({selected:!this.state.selected});
     }
 

@@ -248,6 +248,7 @@ removeAllActiveFilters(){
 }
 
 componentWillMount(){
+  window.addEventListener( 'touchmove', function() {})
   this.state.settings.forEach((item,i) =>{
     var tempKeys=this.state.activeKeys;
     tempKeys.push(item.type + item.title + i);
@@ -381,6 +382,7 @@ render() {
   var filterIcon=<div className="filter" onClick={() => {
     this.setState({filtersVisibility: true});
     window.scrollTo(0,0);
+    $('#ittweb-accelasearch-bar-container').animate({scrollTop: 0 }, 500);
     $('#ittweb-accelasearch-bar-container').css('overflow',"hidden");
     }}>
     <div className="Oval"> <span> {this.state.activeFilters.length} </span> </div>

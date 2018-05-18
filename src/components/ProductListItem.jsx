@@ -35,6 +35,15 @@ export default class ProductListItem extends React.Component {
 
     clickHandler(event){
         event.stopPropagation();
+        // var roba=$( event.target).closest('.card');
+        // window.scrollTo($( event.target).closest('.card')[0].offsetTop,0);
+        // debugger;
+        if(!this.state.selected)
+        $( '#ittweb-accelasearch-bar-container' ).animate({
+            scrollTop: 
+            $( event.target).closest('.card').eq(0).offset().top + $( '#ittweb-accelasearch-bar-container' ).scrollTop() - $(window).height()/5
+            // $( event.target).closest('.card')[0].offsetTop - 100
+        }, 500);
         this.setState({selected:!this.state.selected});
     }       
 
