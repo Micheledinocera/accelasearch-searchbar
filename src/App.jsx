@@ -564,7 +564,8 @@ render() {
       </div>
       <div className="banner" style={{height:this.state.banner_type===SettingItem.BANNER_TYPE_LARGE?"25vh":"8vh"}}>
         <div className="banner-close"> 
-          <FontIcon onClick={() => {
+          <FontIcon onClick={(e) => {
+            e.preventDefault();
             this.setState({banner:""});
             $(".banner-value").html(this.state.banner);
             $(".banner").css("display","none");
