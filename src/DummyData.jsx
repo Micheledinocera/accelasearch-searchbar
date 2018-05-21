@@ -75,6 +75,7 @@ export default class DummyData{
 
     static products = [
         {
+            "sku":"000001",
             "name":"Lou Okuneva",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
@@ -87,6 +88,7 @@ export default class DummyData{
             "subProducts":[
                 {
                     "name":"Lou Okuneva",
+                    "sku":"000001a",
                     "category":"category2",
                     "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
                     "image":"https://picsum.photos/300/300?random",
@@ -95,6 +97,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000001b",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
@@ -104,6 +107,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000001c",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
@@ -113,6 +117,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000001d",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
@@ -122,6 +127,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000001e",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
@@ -131,6 +137,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000001f",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "link":"http://wapone.dev56.ittweb.net/men/shirts/plaid-cotton-shirt-479.html",
@@ -143,6 +150,7 @@ export default class DummyData{
             ],
             "price":"€ 150,99"
         },{
+            "sku":"000002",
             "name":"Ms. Yasmine Berge",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
@@ -154,6 +162,7 @@ export default class DummyData{
             "type":SettingItem.TYPE_CONFIGURABLE,
             "subProducts":[
                 {
+                    "sku":"000002a",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -179,6 +188,7 @@ export default class DummyData{
                     }],
                     "price":"€ 150,99"
                 },{
+                    "sku":"000002b",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -204,6 +214,7 @@ export default class DummyData{
                     }],
                     "price":"€ 150,99"
                 },{
+                    "sku":"000002c",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -229,6 +240,7 @@ export default class DummyData{
                     }],
                     "price":"€ 150,99"
                 },{
+                    "sku":"000002d",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -257,6 +269,7 @@ export default class DummyData{
             ],
             "price":"€ 100,00"
         },{
+            "sku":"000003",
             "name":"Noble Olson",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
@@ -269,6 +282,7 @@ export default class DummyData{
             "subProducts":[],
             "price":"€ 100,00"
         },{
+            "sku":"000004",
             "name":"Dr. Magdalena Lemke",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
@@ -281,6 +295,7 @@ export default class DummyData{
             "subProducts":[],
             "price":"€ 100,00"
         },{
+            "sku":"000005",
             "name":"Wilhelm Hermiston V",
             "category":"category1",
             "image":"https://picsum.photos/300/300?random",
@@ -293,6 +308,7 @@ export default class DummyData{
             "subProducts":[],
             "price":"€ 100,00"
         },{
+            "sku":"000006",
             "name":"Miss Carolina Kuhn",
             "category":"category2",
             "image":"https://picsum.photos/300/300?random",
@@ -305,6 +321,7 @@ export default class DummyData{
             "subProducts":[],
             "price":"€ 100,00"
         },{
+            "sku":"000007",
             "name":"Dr. Adan Jones",
             "category":"category3",
             "image":"https://picsum.photos/300/300?random",
@@ -317,6 +334,7 @@ export default class DummyData{
             "subProducts":[],
             "price":"€ 100,00"
         },{
+            "sku":"000008",
             "name":"Hailey Russel",
             "category":"category1",
             "image":"https://picsum.photos/300/300?random",
@@ -329,6 +347,7 @@ export default class DummyData{
             "subProducts":[],
             "price":"€ 100,00"
         },{
+            "sku":"000009",
             "name":"Korey Lesch",
             "category":"category3",
             "image":"https://picsum.photos/300/300?random",
@@ -340,6 +359,7 @@ export default class DummyData{
             "type":SettingItem.TYPE_GROUP,
             "subProducts":[
                 {
+                    "sku":"000009a",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -349,6 +369,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000009b",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -358,6 +379,7 @@ export default class DummyData{
                     "rating":2,
                     "price":"€ 150,99"
                 },{
+                    "sku":"000009c",
                     "name":"Lou Okuneva",
                     "category":"category2",
                     "image":"https://picsum.photos/300/300?random",
@@ -370,6 +392,7 @@ export default class DummyData{
             ],
             "price":"€ 100,00"
         },{
+            "sku":"000010",
             "name":"Warren Gaylord",
             "category":"category3",
             "image":"https://picsum.photos/300/300?random",

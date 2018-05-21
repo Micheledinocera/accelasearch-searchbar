@@ -60,7 +60,7 @@ class App extends React.Component {
     if(this.isVoiceRecognitionSupported){
       this.recognition = new SpeechRecognition();
       /*  en-US, en-GB, es-ES, fr-FR, it-IT, de-DE, ja-JP, pt-BR, zh-CN */
-      this.recognition.lang="it-IT";
+      this.recognition.lang="en-GB";
       this.recognition.addEventListener('result',  (value) => {
         this.setState({ startRecognition: false });
         $('#ittweb-accelasearch-bar-layer').val(value.results[0][0].transcript);
@@ -69,7 +69,10 @@ class App extends React.Component {
       })
     }
     this.labels=Labels.getLabels(document.documentElement.lang);
+    this.productToDeselect=null;
     this.handleChange = this.handleChange.bind(this);
+    this.deselectAllProducts = this.deselectAllProducts.bind(this);
+    this.selectProduct = this.selectProduct.bind(this);
     this.showLayer = this.showLayer.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
     this.handleChangeSlider = this.handleChangeSlider.bind(this);
@@ -128,6 +131,7 @@ handleChange() {
       $(".banner-value").html(this.state.banner);
       $(".banner").css("display","block");
     }
+    this.deselectAllProducts();
     this.forceUpdate();
   }
 }
@@ -330,6 +334,30 @@ closePanel() {
   setTimeout(() => $('#ittweb-accelasearch-bar-container').css('display','none'),100);
 }
 
+deselectAllProducts() {
+  var tempProducts=this.state.data!==undefined?this.state.data:[];
+  var productToDeselect=null;
+  if(tempProducts.length>0 && tempProducts[0].isSelected!==undefined)
+    tempProducts.some((item)=>{
+      if(item.isSelected===true){
+        productToDeselect=item;
+        return true;
+      } else
+        return false;
+    }
+  );
+  tempProducts.map((item)=>item.isSelected=false);
+  this.setState({data:tempProducts});
+  $('#ittweb-accelasearch-bar-container').css('overflow-y','auto');
+  return productToDeselect;
+}
+
+selectProduct(product){
+  var tempProducts=this.state.data;
+  tempProducts.map((item)=>item.sku===product.sku?item.isSelected=true:item.isSelected=false);
+  this.setState({data:tempProducts});
+}
+
 renderActiveFilters(){
   // var removeIcon=<FontIcon style={{cursor:"pointer",float:"right",margin: "7px"}} onClick={() => this.removeAllActiveFilters()} className="material-icons">close</FontIcon>;
   if(this.state.activeFilters.length >0)
@@ -340,7 +368,7 @@ renderActiveFilters(){
         <Collapse defaultActiveKey="0">
           <Panel className="active-filters-header" header={this.labels["active_filters"]+" (" + this.state.activeFilters.length + ")"} >
             {this.state.activeFilters.map((item,i) => {
-              return <ActiveFilterItem key={item.label + i} theme={this.muiThememuiTheme} index={i} title={item.label} value={item.value} type={item.type} activeFilterClick={() => this.activeFilterClick(item)}/>
+              return <ActiveFilterItem key={item.label + i} theme={this.muiTheme} index={i} title={item.label} value={item.value} type={item.type} activeFilterClick={() => this.activeFilterClick(item)}/>
             })}
           </Panel>
         </Collapse>
@@ -389,7 +417,7 @@ render() {
   </div>;
   return (
     <MuiThemeProvider muiTheme={this.muiTheme}>
-    <div id="ittweb-accelasearch-bar-container" /*style={{width:this.barWidth}}*/ >    
+    <div id="ittweb-accelasearch-bar-container" /*style={{width:this.barWidth}}*/ onClick={this.deselectAllProducts}>    
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
       <div className="header">
@@ -507,19 +535,19 @@ render() {
           <div className={this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?SettingItem.DISPLAY_SINGLE_COLUMN:SettingItem.DISPLAY_DOUBLE_COLUMN}>
             {
               this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?
-                this.state.data.map((product, i) => <ProductGridItem theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductGridItem>):
+                this.state.data.map((product, i) => <div id={"product_"+product.sku} className="product-container-with-sku"> <ProductGridItem theme={this.muiTheme} product={product} selectProduct={this.selectProduct} deselectAllProducts={this.deselectAllProducts} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductGridItem> </div>) :
                 this.state.data.map((product, i, array) => 
                   i%2===0? 
                     <div className="pair-product-container">
-                      <ProductGridItem theme={this.muiTheme} product={product} key={"double-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductGridItem>
-                      <ProductGridItem theme={this.muiTheme} product={array[i+1]} key={"double-column" + product.name + i+1} index={i+1} display={this.state.productsDisplay}> </ProductGridItem>
+                      <div id={"product_"+product.sku} className="product-container-with-sku"> <ProductGridItem theme={this.muiTheme} product={product} pairProduct={array[i+1]} key={"double-column" + product.name + i} index={i} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductGridItem> </div>
+                      <div id={"product_"+array[i+1].sku} className="product-container-with-sku"> <ProductGridItem theme={this.muiTheme} product={array[i+1]} pairProduct={product} key={"double-column" + product.name + i+1} index={i+1} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductGridItem> </div>
                     </div>:
                     null
                 )
             }
             </div>:
             <div>
-              {this.state.data.map((product, i) => <ProductListItem theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductListItem>)}
+              {this.state.data.map((product, i) => <div id={"product_"+product.sku} className="product-container-with-sku"> <ProductListItem  theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductListItem></div>)}
             </div>
           }
           </div>:this.state.isWriting?

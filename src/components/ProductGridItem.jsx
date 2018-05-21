@@ -19,12 +19,18 @@ export default class ProductGridItem extends React.Component {
         this.labels=Labels.getLabels(document.documentElement.lang);
         this.configurationLength=this.props.product.subProducts.length>0 && this.props.product.subProducts[0].configuration!=null?this.props.product.subProducts[0].configuration.length:0;
         this.retrieveConfigurations = this.retrieveConfigurations.bind(this);
+        this.closeHandler=this.closeHandler.bind(this);
         this.checkSubProductConfiguration = this.checkSubProductConfiguration.bind(this);
         this.checkConfigutrationClassName = this.checkConfigutrationClassName.bind(this);
         this.configurationClick = this.configurationClick.bind(this);
         this.buttonLabel = this.buttonLabel.bind(this);
         this.configurations=[];
-        this.removeIcon=<FontIcon onClick={this.clickHandler} className="material-icons close">close</FontIcon>;
+        this.removeIcon=<FontIcon onClick={this.closeHandler} className="material-icons close">close</FontIcon>;
+    }
+
+    closeHandler(e){
+        e.stopPropagation();
+        this.props.deselectAllProducts();
     }
 
     buttonClick(event){
@@ -36,70 +42,40 @@ export default class ProductGridItem extends React.Component {
 
     clickHandler(event){
         event.stopPropagation();
-        var notSelectedItem;
-        var parentPairContainer;
-        // var parentProductItem;
-        var parentSingleContainer;
-        if( this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN){
-            // parentProductItem=$( event.target ).closest(".product-grid-item");
-            parentSingleContainer=$( event.target ).closest(".single-product-container");
-            parentSingleContainer.removeClass("not-selected");
-            // parentSingleContainer.toggleClass("selected");
-            if( parentSingleContainer.hasClass("selected")){
-                parentSingleContainer.removeClass("selected");
-                // parentSingleContainer.off("scroll");
-            } else {
-                parentSingleContainer.addClass("selected");
-                // parentSingleContainer.on('scroll',(e) => {
-                //     console.log('SCROLLING!');
-                //     clearTimeout(parentSingleContainer.data(this, 'scrollTimer'));
-                //     parentSingleContainer.data(this, 'scrollTimer', setTimeout(function(){console.log("Haven't scrolled in 250ms!")}, 250));
-                //     // singleProductContainer.data(this, 'scrollTimer', setTimeout(that.scrollFinished(e), 250));
-                // });
-            }
-            parentPairContainer=$( event.target ).closest(".pair-product-container");
-            if(this.props.index%2===0)
-                notSelectedItem=parentPairContainer.find(".second");
-            else
-                notSelectedItem=parentPairContainer.find(".first");
-            
-            notSelectedItem.removeClass("selected");
-            
-            if(notSelectedItem.hasClass("not-selected")){
-                notSelectedItem.css("display","block");
-                // setTimeout(()=>notSelectedItem.removeClass("not-selected"),300);
-                notSelectedItem.removeClass("not-selected");
-            } else {
-                notSelectedItem.addClass("not-selected");
-                // setTimeout(()=>notSelectedItem.css("display","none"),300);   
-                notSelectedItem.css("display","none");
-            }
-        }
-        if(!this.state.selected)
-            $( '#ittweb-accelasearch-bar-container' ).animate({
-                scrollTop: 
-                $( event.target).closest('.card').eq(0).offset().top + $( '#ittweb-accelasearch-bar-container' ).scrollTop() - $(window).height()/5
-                // $( event.target).closest('.card')[0].offsetTop - 100
-            }, 500);
-        this.setState({selected:!this.state.selected});
+        var productToDeselect=this.props.deselectAllProducts();
+        var delta=productToDeselect!==null?$( event.target).closest('.card').eq(0).offset().top-$( '#product_'+productToDeselect.sku ).eq(0).offset().top:0;
+        var windowHeight=productToDeselect!==null?
+            delta>0?
+                this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?$(window).height()/20-$(window).height()/3:$(window).height()/20-$(window).height()/5
+                :$(window).height()/20-$(window).height()/2:
+            $(window).height()/5;
+        var lastClicked= productToDeselect!==null?$( '#product_'+productToDeselect.sku ).height():0;
+        $( '#ittweb-accelasearch-bar-container' ).animate({
+            scrollTop:$( event.target).closest('.card').eq(0).offset().top + $( '#ittweb-accelasearch-bar-container' ).scrollTop() - lastClicked - windowHeight
+        }, 500);
+        if(this.props.product.type===SettingItem.TYPE_GROUP)
+            $('#ittweb-accelasearch-bar-container').css('overflow-y','hidden');
+        else
+            $('#ittweb-accelasearch-bar-container').css('overflow-y','auto');
+        this.props.selectProduct(this.props.product);
     }
 
     setClassName(){
         if( this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN)
             // return "product-grid-item card";
-            return this.state.selected?"selected":"";
-        else if( this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN && this.props.index%2===0)
-            // return "product-grid-item card first";
-            return "first";
-        else if( this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN && this.props.index%2===1)
-            // return "product-grid-item card second";
-            return "second";
+            return this.props.product.isSelected?"selected":"";
+        else if( this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN && this.props.product.isSelected)
+            return "selected"
+        else if (this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN && this.props.pairProduct.isSelected)
+            return "not-selected"
+        else 
+            return "";
     }
 
     renderVariant(){
         $('#ittweb-accelasearch-bar-container').css('overflow-y','auto');
         return this.props.product.subProducts.map((item,index,array) => 
-            <div className={"sub-products product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?null:this.clickHandler} ref={(node) => {
+            <div className={"sub-products product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?null:this.clickHandler} ref={(node) => {
                 if (node) {
                   node.style.setProperty("margin-top", (this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN?35:-10)-5*index+"px", "important");
                   node.style.setProperty("margin-left", (this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN?10:-10)-5*index+"px", "important");
@@ -130,7 +106,7 @@ export default class ProductGridItem extends React.Component {
     renderCards(){
         $('#ittweb-accelasearch-bar-container').css('overflow-y','hidden');
         return this.props.product.subProducts.map((item,index,array) => 
-            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.state.selected?()=>{window.location = item.link}:this.clickHandler}> 
+            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?()=>{window.location = item.link}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="product-counter"> {(index+1)+"/"+array.length}</div>
                 <div className="name"> {this.props.product.name} </div>
@@ -163,7 +139,7 @@ export default class ProductGridItem extends React.Component {
 
     renderConfigurable(){
         return <div className={"single-product-container "+this.setClassName()} style={{width: this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?"100%":"50%"}}>
-            <div className="product-grid-item card" onClick={this.state.selected?()=>{window.location = this.props.product.link}:this.clickHandler}> 
+            <div className="product-grid-item card" onClick={this.props.product.isSelected?()=>{window.location = this.props.product.link}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="name"> {this.props.product.name} </div>
                 <StarRatingComponent 
@@ -186,7 +162,7 @@ export default class ProductGridItem extends React.Component {
                     <div className="configurable">
                         {this.retrieveConfigurations().map(
                             (item,index,array)=>{
-                                return <div className="single-configuration"> 
+                                return <div className="single-configuration" key={"title_"+index}> 
                                     <div className="title">{item.title} </div>
                                     <div className="values"> {item.values.map(
                                         (configuration_item,configuration_index) => <div className={this.checkConfigutrationClassName(item,configuration_item)} onClick={(event)=>this.configurationClick(event,item,configuration_item)} style={{backgroundColor:item.type==="color"?item.labels[configuration_index]:null,width:item.type==="color"?"60px":null}}> {item.type==="color"?null:item.labels[configuration_index]} </div>
@@ -204,7 +180,7 @@ export default class ProductGridItem extends React.Component {
                     {
                         this.state.subProduct!==null?
                         <div className="cart-button-container">
-                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?'Show Details':'Add To Cart'} </button>
+                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.props.product.isSelected?null:this.buttonClick}> {(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.props.product.isSelected?'Show Details':'Add To Cart'} </button>
                             <button className="cart-button back"> DONE </button>
                         </div>:
                         <button className="cart-button disabled" onClick={(event)=>event.stopPropagation()}> Complete Configuration </button>
@@ -363,9 +339,9 @@ export default class ProductGridItem extends React.Component {
     buttonLabel(){
         if(this.props.product.with_option)
             return 'To product details';
-        if(this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.state.selected)
+        if(this.props.product.type===SettingItem.TYPE_CONFIGURABLE && !this.props.product.isSelected)
             return 'Configure Product';
-        if(this.props.product.type===SettingItem.TYPE_GROUP && !this.state.selected)
+        if(this.props.product.type===SettingItem.TYPE_GROUP && !this.props.product.isSelected)
             return 'Show Detail';
         else
             return 'Add To Cart';
@@ -380,10 +356,10 @@ export default class ProductGridItem extends React.Component {
             centerMode: true
           };
         return (
-            !this.state.selected || this.props.product.subProducts.length===0?
-            <div className={"single-product-container "+this.setClassName()} style={{width: this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?"100%":"50%"}}>
+            !this.props.product.isSelected || this.props.product.subProducts.length===0?
+            <div className={"single-product-container "+this.setClassName()} style={{width: this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?"100%":"92%"}}>
                 { this.renderVariant() }
-                <div className="product-grid-item card" onClick={this.state.selected  || this.props.product.with_option?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+                <div className="product-grid-item card" onClick={this.props.product.isSelected  || this.props.product.with_option?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
                     {this.removeIcon}
                     <div className="name"> {this.props.product.name} </div>
                     <StarRatingComponent 
@@ -409,7 +385,7 @@ export default class ProductGridItem extends React.Component {
                             <div className="price"> {this.props.product.price} </div>
                         </div>
                         <div className="cart-button-container">
-                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.state.selected?null:this.props.product.with_option?()=>{window.location = this.props.product.link}:this.buttonClick}> {this.buttonLabel()} </button>
+                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.props.product.isSelected?null:this.props.product.with_option?()=>{window.location = this.props.product.link}:this.buttonClick}> {this.buttonLabel()} </button>
                             <button className="cart-button back"> DONE </button>
                         </div>
                     </div>
