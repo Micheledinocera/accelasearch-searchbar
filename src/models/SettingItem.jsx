@@ -12,8 +12,11 @@ export default class SettingItem {
     static TYPE_GRID="grid";
     static TYPE_RATING="rating";
     static TYPE_SIMPLE="simple";
-    static TYPE_GROUP="group";
+    static TYPE_GROUP="grouped";
     static TYPE_CONFIGURABLE="configurable";
+    static TYPE_BUNDLE="bundle";
+    static TYPE_VIRTUAL="virtual";
+    static TYPE_DOWNLOADABLE="downloadable";
     static DISPLAY_SINGLE_COLUMN="single-column";
     static DISPLAY_DOUBLE_COLUMN="double-column";
     static DISPLAY_LIST="list";
@@ -28,6 +31,8 @@ export default class SettingItem {
         "Rating discendente"
     ];
 
+    static url="http://demo.dev1.accelasearch.net/?q=";
+    static currency="€";
     type ="";
     title="";
     values;
@@ -61,7 +66,7 @@ export default class SettingItem {
         return this.values;
     }
 
-    getSelectedValue(selectedValue){
+    getSelectedValue(){
         return this.selectedValue;
     }
 }

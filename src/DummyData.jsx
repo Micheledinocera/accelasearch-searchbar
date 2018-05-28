@@ -1,4 +1,5 @@
 import SettingItem from './models/SettingItem.jsx'
+import BannerImage from './assets/banner_basso@2x.png';
 
 export default class DummyData{
     static categories1 = [{
@@ -42,9 +43,11 @@ export default class DummyData{
     }];
 
     static minChars=3;
+    static rows=10;
     
     static bannerLarge='<html><head><title></title></head><body><p style="background-color:blue;height:25vh"><img alt="" src="https://picsum.photos/200/200?random" style="height:182px; width:200px" />BANNER</p></body></html>';
-    static bannerSmall='<html><head><title></title></head><body><p style="background-color:blue;height:8vh"><img alt="" src="https://picsum.photos/100/100?random" style="height:100px; width:100px" />BANNER</p></body></html>';
+    // static bannerSmall='<html><head><title></title></head><body><p style="background-color:blue;height:8vh"><img alt="" src="https://picsum.photos/100/100?random" style="height:100px; width:100px" />BANNER</p></body></html>';
+    static bannerSmall='<html><head><title></title></head><body style="height:8vh"><img alt="" src="'+BannerImage+'" style="height:100%; width:100%" /></body></html>';
     static sliderValues1 = {min:0,max:100};
     static sliderValues2 = {min:1,max:99};
 
@@ -57,17 +60,17 @@ export default class DummyData{
     static gridValues1 = [{value:'griditem11',label:"griditem11"},{value:'griditem12',label:"griditem12"},{value:'griditem13',label:"griditem13"},{value:'griditem14',label:"griditem14"},{value:'griditem15',label:"griditem15"}];
     static gridValues2 = [{value:'griditem21',label:"griditem21"},{value:'griditem22',label:"griditem22"},{value:'griditem23',label:"griditem23"}];
     
-    static maybeLooking = ['Borsone','Borsa brutta','Borsa bella','Borsa vuota','Borsa bruttissima','Borsa inutilissimissima'];
+    static maybeLooking = [];
     static mostSearched = [
         {
             'title':'categories',
-            'values':['Borsone','Borsa brutta','Borsa bella','Borsa vuota','Borsa bruttissima','Borsa inutilissimissima']
+            'values':['Men','Women','Accessories','Sale','VIP']
         },{
             'title':'most_searched',
             'values':['Borsone2','Borsa brutta2','Borsa bella2','Borsa vuota2','Borsa bruttissima2','Borsa inutilissimissima2']
         },{
             'title':'maybe_looking',
-            'values':['Borsone3','Borsa brutta3','Borsa bella3','Borsa vuota3','Borsa bruttissima3','Borsa inutilissimissima3']
+            'values':[]
         }
     ];
 
@@ -496,5 +499,9 @@ export default class DummyData{
 
     static getMinChars(){
         return this.minChars;
+    }
+
+    static getRows(){
+        return this.rows;
     }
 }

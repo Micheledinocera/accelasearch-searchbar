@@ -29,7 +29,7 @@ export default class CheckboxItem extends React.Component {
                             <span style={{display: (i<5 || (i>=5 && this.state.isExpanded)) && (value.length===0?true:value.every((valueItem)=>label.value!==valueItem.value))?"flex":"none"}}> {label.resultsCount}</span>
                             <Checkbox  
                                 className={value.indexOf(label)!==-1?"checkbox-item checkbox-class-"+label.value+ i+"-checked":"checkbox-item checkbox-class-"+label.value+ i}
-                                key={label.value + i} labelStyle={{fontSize: '25px', marginTop: '5%'}} iconStyle={{width:'40px',height:'40px'}} style={{display: (i<5 || (i>=5 && this.state.isExpanded)) && (value.length===0?true:value.every((valueItem)=>label.value!==valueItem.value))?"flex":"none"}} 
+                                key={label.value + i} labelStyle={{fontSize: '25px'}} iconStyle={{width:'40px',height:'40px'}} style={{display: (i<5 || (i>=5 && this.state.isExpanded)) && (value.length===0?true:value.every((valueItem)=>label.value!==valueItem.value))?"flex":"none"}} 
                                 checked={value.indexOf(label)!==-1} value={label.value} label={label.value} onCheck={(value) => this.props.clickHandler(value,label)}/>
                         </div>
                     </div>}

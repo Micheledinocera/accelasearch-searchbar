@@ -37,7 +37,7 @@ class App extends React.Component {
       maybeLookingFor:DummyData.getDummyMaybeLooking(),
       filtersVisibility: false,
       productsDisplay:SettingItem.DISPLAY_DOUBLE_COLUMN,
-      settings:DummyData.getDummySettings(),
+      settings:[],
       activeFilters:[],
       searchValue:"",
       selectedHint:DummyData.getDummyMostSearched()[0].title,
@@ -45,12 +45,16 @@ class App extends React.Component {
       activeKeys:[],
       orderChosen:SettingItem.ORDER_LIST[0],
       minChars: DummyData.getMinChars(),
+      rows: DummyData.getRows(),
+      startRows: 0,
       banner_type: SettingItem.BANNER_TYPE_SMALL,
-      banner: DummyData.getBanner()
+      banner: DummyData.getBanner(),
+      numFound:0
     }
     // this.barWidth=parseInt(this.props.barWidth,10);
-    this.url = 'https://randomapi.com/api/wtue8jke?key=V0N1-X5TM-Z9BQ-JGQR&results=25';
-    this.secondUrl = 'http://localhost:8080/api/react?value=a';
+    this.url = SettingItem.url;
+    // this.secondUrl = 'http://localhost:8080/api/react?value=a';
+    // this.secondUrl = 'http://localhost:8080/api/react?value=a';
     const SpeechRecognition = window.SpeechRecognition
       || window.webkitSpeechRecognition
       || window.mozSpeechRecognition
@@ -75,7 +79,12 @@ class App extends React.Component {
     this.selectProduct = this.selectProduct.bind(this);
     this.showLayer = this.showLayer.bind(this);
     this.toggleFilter = this.toggleFilter.bind(this);
+    this.fromObjectToArray = this.fromObjectToArray.bind(this);
     this.handleChangeSlider = this.handleChangeSlider.bind(this);
+    this.buildSuggestions = this.buildSuggestions.bind(this);
+    this.updateStartRows = this.updateStartRows.bind(this);
+    this.convertResponseToFilters = this.convertResponseToFilters.bind(this);
+    this.convertResponseToProducts = this.convertResponseToProducts.bind(this);
     this.horizontalClick = this.horizontalClick.bind(this);
     this.ratingSelectedhandler = this.ratingSelectedhandler.bind(this);
     this.openSearchLayer = this.openSearchLayer.bind(this);
@@ -89,6 +98,14 @@ class App extends React.Component {
     this.websiteSearchBar.on("focus",this.showLayer);
     this.primaryColor="#306ccc";
     this.secondaryColor="#4f8fed";
+    // fetch("config.json")
+    // .then(result=>{console.log(result);return result.json()})
+    // .then(settings=>{
+    //   console.log(settings);
+    //   this.setState({
+    //     minChars:settings.minChars
+    //   })
+    // })
     this.muiTheme = getMuiTheme({
         palette:{
           primary1Color:this.secondaryColor,
@@ -102,38 +119,130 @@ class App extends React.Component {
     );
  }
 
+convertResponseToProducts(data){
+  data.map((item)=>item._configurations===undefined?item._configurations=[]:null);
+  return data;
+}
+
+convertResponseToFilters(settings){
+  var settingtemp=[];
+  settingtemp.push(new SettingItem({
+    type:SettingItem.TYPE_CHECKBOX,
+    title:"Categories",
+    values:this.fromObjectToArray(settings.facet_fields.categories,"value","resultsCount"),
+    selectedValue:[]
+  }));
+  settingtemp.push(new SettingItem({
+    type:SettingItem.TYPE_RANGE,
+    title:"Price",
+    values:this.fromObjectToRangeValues(settings.facet_fields.price),
+    selectedValue:[]
+  }));
+  var attributes = [];
+  Object.keys(settings.facet_fields.attributes).forEach(item=>attributes.push({title:item,values:settings.facet_fields.attributes[item]}));
+  attributes.forEach((item)=>
+    settingtemp.push(new SettingItem({
+      type:SettingItem.TYPE_GRID,
+      title:item.title,
+      values:this.fromObjectToArrayAttributes(item.values,"label","value"),
+      selectedValue:[]
+  })));
+  return settingtemp;
+}
+
+fromObjectToRangeValues(object){
+  var max=Math.max.apply(Math, Object.keys(object));
+  var min=Math.min.apply(Math, Object.keys(object));
+  return {min:min,max:max};
+}
+
+fromObjectToArray(object,key1,key2){
+  var array= []
+  var activeFilters=this.state.activeFilters;
+  Object.keys(object).forEach((item)=>{
+    if (activeFilters.every((filterItem)=>item!==filterItem.label))
+      array.push({[key1]:item,[key2]:object[item]})
+    // array.push({[key1]:item.split(",")[item.split(",").length-1],[key2]:object[item]})
+      
+  });
+  return array;
+}
+
+fromObjectToArrayAttributes(object,key1,key2){
+  var array= []
+  Object.keys(object).forEach((item)=>
+    array.push({[key1]:item,[key2]:item})
+  );
+  return array;
+}
+
 handleChange() {
+  var startRows=0;
+  if($('#ittweb-accelasearch-bar-layer')[0].value!==this.state.searchValue){
+    this.setState({startRows:0});
+  } else {
+    startRows=this.state.startRows;
+  }
   if($('#ittweb-accelasearch-bar-layer')[0].value!==undefined && $('#ittweb-accelasearch-bar-layer')[0].value.length>0)
     this.setState({isWriting:true});
   else
     this.setState({isWriting:false});
   if($('#ittweb-accelasearch-bar-layer')[0].value.length>=this.state.minChars){
-    var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
-    this.setState({data:data.results});
+    // var data=$('#ittweb-accelasearch-bar-layer')[0].value==="vuoto"?{results:[]}:DummyData.getDummyProducts();
+    // this.setState({data:data.results});
     this.setActiveFilters();
-    //fetch(this.secondUrl)
-    //  .then(result=>{
-    //    if(result.status !== 403)
-    //      return result.json();
-    //    else 
-    //      return [];
-    //  })
-    //  .then(items=>{
-    //    if(items === [])
-    //      this.setState({data:[]});
-    //    else{
-    //      this.setState({data:items.data.results})
-    //    }
-    //  });
+    fetch(this.url+$('#ittweb-accelasearch-bar-layer')[0].value+"&start="+startRows+"&rows="+this.state.rows)
+      .then(result=>{
+        if(result.status !== 403)
+          return result.json();
+        else 
+          return [];
+      })
+      .then(response=>{
+        console.log(response);
+        var mostSearchedCategoriesTemp=this.state.mostSearchedCategories;
+        mostSearchedCategoriesTemp[2].values=this.buildSuggestions(response["suggested-keywords"]);
+        var data=this.state.data;
+        this.setState({
+          numFound:response.response.numFound,
+          maybeLookingFor:this.buildSuggestions(response["suggested-keywords"]),
+          mostSearchedCategories:mostSearchedCategoriesTemp,
+          data:response.response.start>0?data.concat(this.convertResponseToProducts(response.response.docs)):this.convertResponseToProducts(response.response.docs),
+          settings:this.convertResponseToFilters(response.facet_counts)
+        });
+        // this.forceUpdate();
+        // if(items === [])
+        //   this.setState({data:{results:[]}});
+        // else
+        //   this.setState({data:{results:items.data.results}});
+      })
+      .catch(error=>console.log(error));
     this.setState({searchValue: $('#ittweb-accelasearch-bar-layer')[0].value});
-    this.setState({banner: DummyData.getBanner()})
-    if(this.state.banner!==""){
+    if($('#ittweb-accelasearch-bar-layer')[0].value!=="shoes"){
+      this.setState({banner:""});
+      $(".banner-value").html("");
+      $(".banner").css("display","none");
+    } else {
+      this.setState({banner:DummyData.getBanner()});
       $(".banner-value").html(this.state.banner);
       $(".banner").css("display","block");
     }
     this.deselectAllProducts();
-    this.forceUpdate();
   }
+}
+
+updateStartRows(){
+  this.setState({startRows:10},this.handleChange());
+}
+
+buildSuggestions(data){
+  if(data.collations.length>0){
+    var collationsTemp=data.collations.filter((item,index)=>index%2===1);
+    return collationsTemp.map((item)=>item.collationQuery);
+  } else if(data.suggestions.length>0){
+    return data.suggestions.filter((item,index)=>index%2===1)[0].suggestion;
+  } else 
+    return [];
 }
 
 showLayer() {
@@ -166,7 +275,7 @@ setActiveFilters(){
           value:item.selectedValue,
           type: item.type
         })
-      else  
+      else
         item.selectedValue.forEach((value)=>{
           activeFilters.push({
             label:item.title,
@@ -260,8 +369,13 @@ componentWillMount(){
 }
 
 componentDidMount(){
-  $('#ittweb-accelasearch-bar-layer').on("keyup",this.handleChange);
-  $('#ittweb-accelasearch-bar-layer').on("keyup focus",this.openSearchLayer);
+  $('#ittweb-accelasearch-bar-layer').on("keyup paste",this.handleChange);
+  $('#ittweb-accelasearch-bar-layer').on("keyup focus paste",this.openSearchLayer);
+}
+
+componentDidUpdate(prevProps,prevState){
+  if(prevState.startRows<this.state.startRows)
+    this.handleChange();
 }
 
 openSearchLayer(event){
@@ -337,16 +451,16 @@ closePanel() {
 deselectAllProducts() {
   var tempProducts=this.state.data!==undefined?this.state.data:[];
   var productToDeselect=null;
-  if(tempProducts.length>0 && tempProducts[0].isSelected!==undefined)
+  if(tempProducts.length>0 && tempProducts[0].isSelected!==undefined){
     tempProducts.some((item)=>{
       if(item.isSelected===true){
         productToDeselect=item;
         return true;
       } else
         return false;
-    }
-  );
-  tempProducts.map((item)=>item.isSelected=false);
+    });
+    tempProducts.map((item)=>item.isSelected=false);
+  };
   this.setState({data:tempProducts});
   $('#ittweb-accelasearch-bar-container').css('overflow-y','auto');
   return productToDeselect;
@@ -356,6 +470,7 @@ selectProduct(product){
   var tempProducts=this.state.data;
   tempProducts.map((item)=>item.sku===product.sku?item.isSelected=true:item.isSelected=false);
   this.setState({data:tempProducts});
+  this.forceUpdate();
 }
 
 renderActiveFilters(){
@@ -405,6 +520,7 @@ render() {
   if(this.state.data === undefined){
     this.setState({data:[]});
   }
+  var moreButton=<div className="more_results_button" style={{display:this.state.rows*(this.state.startRows+1)>this.state.data.length?"none":"block"}}><button onClick={this.updateStartRows}> MORE AND MORE </button> </div>
   var removeIconWhite=<FontIcon style={{ color:"white"}} onClick={() => {this.setState({filtersVisibility: false});$('#ittweb-accelasearch-bar-container').css('overflow',"auto");}} className="material-icons close">close</FontIcon>;
   var filterIcon=<div className="filter" onClick={() => {
     this.setState({filtersVisibility: true});
@@ -465,19 +581,23 @@ render() {
                           key={item.title + i} title={item.title} theme={this.muiTheme} type={item.type} sliderValue={item.selectedValue} minMax={item.values} handleAfterChangeSlider={(value) => this.handleAfterChangeSlider(value,item)} handleChangeSlider={(value) => this.handleChangeSlider(value,item)}/>
                       </Panel>
                     case SettingItem.TYPE_CHECKBOX:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue!==undefined && item.selectedValue.length===item.values.length?"none":""}}> <CheckboxItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue!==undefined && item.selectedValue.length===item.values.length?"none":""}}> 
+                      <CheckboxItem 
                         key={item.title + i} title={item.title} labels={item.values} value={item.selectedValue} clickHandler={(value,label) => this.checkboxHandler(value, label,item)}/>
                         </Panel>
                     case SettingItem.TYPE_RADIO:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue?"none":""}}> <RadioGroupItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue?"none":""}}> 
+                      <RadioGroupItem 
                         key={item.title + i} title={item.title} values={item.values} selectedValue={item.selectedValue} radioSelectedhandler={(value) => this.radioSelectedhandler(value,item)}/>  
                         </Panel>
                     case SettingItem.TYPE_GRID:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue?"none":""}}> <GridItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true} style={{display:item.selectedValue?"none":""}}> 
+                      <GridItem 
                         key={item.title + i} title={item.title} values={item.values} selectedValue={item.selectedValue} gridSelectedhandler={(value) => this.gridSelectedhandler(value,item)}/>  
                         </Panel>
                     case SettingItem.TYPE_RATING:
-                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true}> <RatingItem 
+                      return <Panel header={item.title} key={item.type + item.title + i} showArrow={true}> 
+                      <RatingItem 
                         key={item.title + i} title={item.title} theme={this.muiTheme} selectedValue={item.selectedValue} ratingSelectedhandler={(value) => this.ratingSelectedhandler(value,item)}/>
                         </Panel>
                     default:
@@ -503,7 +623,7 @@ render() {
           {/*<div className="maybe-label"> Forse cercavi</div>
           <HorizontalScroll mostSearched={this.state.maybeLookingFor} clickHandler={this.horizontalClick} />*/}
           <div className="results-container-header">
-            <div className="results-number"> {this.state.data.length} </div>
+            <div className="results-number"> {this.state.numFound} </div>
             <div className="results-label"> Results </div>
             <div className="results-order"> 
               <SelectField
@@ -532,25 +652,30 @@ render() {
             </div>
           </div>
           { this.state.productsDisplay!==SettingItem.DISPLAY_LIST?
-          <div className={this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?SettingItem.DISPLAY_SINGLE_COLUMN:SettingItem.DISPLAY_DOUBLE_COLUMN}>
+          <div className={this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?SettingItem.DISPLAY_SINGLE_COLUMN:SettingItem.DISPLAY_DOUBLE_COLUMN} style={{marginBottom:"150px"}}>
             {
               this.state.productsDisplay===SettingItem.DISPLAY_SINGLE_COLUMN?
                 this.state.data.map((product, i) => <div id={"product_"+product.sku} className="product-container-with-sku"> <ProductGridItem theme={this.muiTheme} product={product} selectProduct={this.selectProduct} deselectAllProducts={this.deselectAllProducts} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay}> </ProductGridItem> </div>) :
                 this.state.data.map((product, i, array) => 
                   i%2===0? 
                     <div className="pair-product-container">
-                      <div id={"product_"+product.sku} className="product-container-with-sku"> <ProductGridItem theme={this.muiTheme} product={product} pairProduct={array[i+1]} key={"double-column" + product.name + i} index={i} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductGridItem> </div>
-                      <div id={"product_"+array[i+1].sku} className="product-container-with-sku"> <ProductGridItem theme={this.muiTheme} product={array[i+1]} pairProduct={product} key={"double-column" + product.name + i+1} index={i+1} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductGridItem> </div>
+                      <div id={"product_"+product.sku} className={product.isSelected?"product-container-with-sku selected":array[i+1]!==undefined && array[i+1].isSelected?"product-container-with-sku not-selected":"product-container-with-sku"}> <ProductGridItem theme={this.muiTheme} product={product} pairProduct={array[i+1]} key={"double-column" + product.name + i} index={i} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductGridItem> </div>
+                      {array[i+1]!==undefined?
+                        <div id={"product_"+array[i+1].sku} className={array[i+1].isSelected?"product-container-with-sku selected":product.isSelected?"product-container-with-sku not-selected":"product-container-with-sku"}> <ProductGridItem theme={this.muiTheme} product={array[i+1]} pairProduct={product} key={"double-column" + product.name + i+1} index={i+1} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductGridItem> </div>:
+                        null
+                      }
                     </div>:
                     null
                 )
             }
+            {moreButton}
             </div>:
-            <div>
+            <div style={{marginBottom:"150px"}}>
               {this.state.data.map((product, i) => <div id={"product_"+product.sku} className="product-container-with-sku"> <ProductListItem  theme={this.muiTheme} product={product} key={"single-column" + product.name + i} index={i} display={this.state.productsDisplay} deselectAllProducts={this.deselectAllProducts} selectProduct={this.selectProduct}> </ProductListItem></div>)}
+              {moreButton}
             </div>
           }
-          </div>:this.state.isWriting?
+          </div>:this.state.searchValue.length>=this.state.minChars?
           <div>
             <div className="no-results-label"> {this.labels["no_results"]} </div>
             <div className="maybe-label-no-results"> {this.labels["maybe_looking"]+":"} </div>
@@ -562,6 +687,7 @@ render() {
         }
         </div>
       </div>
+      
       <div className="banner" style={{height:this.state.banner_type===SettingItem.BANNER_TYPE_LARGE?"25vh":"8vh"}}>
         <div className="banner-close"> 
           <FontIcon onClick={(e) => {

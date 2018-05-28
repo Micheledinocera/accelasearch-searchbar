@@ -15,12 +15,12 @@ export default class Labels {
     };
     static EN_LABELS={
         categories:"Categories",
-        most_searched:"Most Searched",
-        maybe_looking:"Maybe you are looking for",
+        most_searched:"Most Popular",
+        maybe_looking:"Did you mean",
         filters:"Filters",
         active_filters:"Active Filters",
         remove_active_filters:"Remove Active Filters",
-        no_results:"We are sorry but no coherent results are found",
+        no_results:"No results found",
         short_desc:"Short Description",
         desc:"Description"
     };

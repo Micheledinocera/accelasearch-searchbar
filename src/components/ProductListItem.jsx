@@ -4,6 +4,7 @@ import SettingItem from '../models/SettingItem'
 import Labels from '../models/Labels.jsx'
 import Slider from "react-slick";
 import FontIcon from 'material-ui/FontIcon';
+import ImagePlaceholder from '../assets/product-placeholder.jpg';
 import $ from 'jquery';
 
 export default class ProductListItem extends React.Component {
@@ -15,7 +16,9 @@ export default class ProductListItem extends React.Component {
             partialConfiguration:[]
         }
         this.labels=Labels.getLabels(document.documentElement.lang);
-        this.configurationLength=this.props.product.subProducts.length>0 && this.props.product.subProducts[0].configuration!=null?this.props.product.subProducts[0].configuration.length:0;
+        this.currency=SettingItem.currency;
+        this.filterAttributes = this.filterAttributes.bind(this);
+        this.configurationLength=this.props.product._configurations.length>0 && this.props.product._configurations[0].configuration!=null?this.props.product._configurations[0].configuration.length:0;
         this.clickHandler=this.clickHandler.bind(this);
         this.closeHandler=this.closeHandler.bind(this);
         this.buttonLabel = this.buttonLabel.bind(this);
@@ -25,6 +28,11 @@ export default class ProductListItem extends React.Component {
         this.configurationClick = this.configurationClick.bind(this);
         this.configurations=[];
         this.removeIcon=<FontIcon onClick={this.closeHandler} className="material-icons close">close</FontIcon>;
+    }
+
+    filterAttributes(title){
+        var parentAttributes=Object.keys(this.props.product.attributes);
+        return !parentAttributes.includes(title);
     }
 
     closeHandler(e){
@@ -59,7 +67,7 @@ export default class ProductListItem extends React.Component {
     }       
 
     renderVariant(){
-        return this.props.product.subProducts.map((item,index,array) => 
+        return this.props.product._configurations.map((item,index,array) => 
             <div className={this.props.product.isSelected?"selected sub-products product-list-item card":"sub-products product-list-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?null:this.clickHandler} ref={(node) => {
                 if (node) {
                   node.style.setProperty("margin-top", -10-5*index+"px", "important");
@@ -76,12 +84,17 @@ export default class ProductListItem extends React.Component {
                     starColor={this.props.theme.palette.primary1Color}
                     emptyStarColor={'gray'}
                 />
-                <img className="image" src={this.props.product.image} alt=""/>
+                <img className="image" src={this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
                 <div className="card-footer">
-                <div style={{width:"50%"}}>
-                        <div className="secondary-price strikediag"> {this.props.product.price} </div>
-                        <div className="price"> {this.props.product.price} </div>
-                    </div>
+                    {this.props.product.special_price!==undefined?
+                         <div style={{width:"50%"}}>
+                            <div className="secondary-price strikediag"> {this.props.product.price+" "+this.currency} </div>
+                            <div className="price"> {this.props.product.special_price+" "+this.currency} </div>
+                        </div>:
+                         <div style={{width:"50%"}}>
+                            <div className="price"> {this.props.product.price+" "+this.currency} </div>
+                        </div>
+                    }
                     <button className="cart-button"> Add To Cart </button>
                 </div> 
             </div>
@@ -89,7 +102,20 @@ export default class ProductListItem extends React.Component {
     } 
 
     retrieveConfigurations(){
-        this.props.product.subProducts.forEach((item) => {
+        if(this.props.product._configurations.length>0 && this.props.product._configurations[0].attributes!=null){
+            this.props.product._configurations.forEach((item)=>{
+                var attributesTemp=[];
+                item.attributes.forEach((subItem)=>attributesTemp.push({
+                    //"type":subItem.split(":")[0]==="color"?"color":"other",
+                    "type":"other",
+                    "title":subItem.split(":")[0],
+                    "value":subItem.split(":")[1],
+                    "label":subItem.split(":")[1]
+                }));
+                item.configuration=attributesTemp.filter((subItem)=>this.filterAttributes(subItem.title));
+            });
+        };
+        this.props.product._configurations.forEach((item) => {
             item.configuration.forEach( (configuration_item) => {
                 if( this.configurations.filter((configurations_item)=> configurations_item.title===configuration_item.title).length===0)
                     this.configurations.push({
@@ -110,16 +136,21 @@ export default class ProductListItem extends React.Component {
     }
 
     renderConfigurable(){
-        return <div className={this.props.product.isSelected?"selected product-list-item card":"product-list-item card"} onClick={this.props.product.isSelected?()=>{window.location = this.props.product.link}:this.clickHandler}> 
+        return <div className={this.props.product.isSelected?"selected product-list-item card":"product-list-item card"} onClick={this.props.product.isSelected?()=>{window.location = this.props.product.URL}:this.clickHandler}> 
         {this.removeIcon}
         <div className="not-selected-container">
-            <img className="image" src={this.props.product.image} alt=""/>
+            <img className="image" src={this.state.subProduct!==null?this.state.subProduct.image:this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
             <div className="info-container">
                 <div className="name"> {this.props.product.name} </div>
-                <div className="price-container" >
-                    <div className="secondary-price strikediag"> {this.props.product.price} </div>
-                    <div className="price"> {this.props.product.price} </div>
-                </div>
+                {this.props.product.special_price!==undefined?
+                    <div className="price-container" >
+                        <div className="secondary-price strikediag"> {(this.state.subProduct!==null?this.state.subProduct.price:this.props.product.price)+" "+this.currency} </div>
+                        <div className="price"> {(this.state.subProduct!==null?this.state.subProduct.special_price:this.props.product.special_price)+" "+this.currency} </div>
+                    </div>:
+                        <div className="price-container" >
+                        <div className="price"> {(this.state.subProduct!==null?this.state.subProduct.price:this.props.product.price)+" "+this.currency} </div>
+                    </div>
+                }
                 <StarRatingComponent 
                     name="rate1" 
                     starCount={5}
@@ -129,10 +160,15 @@ export default class ProductListItem extends React.Component {
                     emptyStarColor={'gray'}
                 />
                 <div className="card-footer">
-                    <div style={{width:"50%",display:this.props.product.isSelected?'block':'none'}}>
-                        <div className="secondary-price strikediag"> {this.props.product.price} </div>
-                        <div className="price"> {this.props.product.price} </div>
-                    </div>
+                    {this.state.subProduct.special_price!==undefined?
+                        <div style={{width:"50%",display:this.props.product.isSelected?'block':'none'}}>
+                            <div className="secondary-price strikediag"> {(this.state.subProduct!==null?this.state.subProduct.price:this.props.product.price)+" "+this.currency} </div>
+                            <div className="price"> {(this.state.subProduct!==null?this.state.subProduct.special_price:this.props.product.special_price)+" "+this.currency} </div>
+                        </div>:
+                        <div style={{width:"50%",display:this.props.product.isSelected?'block':'none'}}>
+                            <div className="price"> {(this.state.subProduct!==null?this.state.subProduct.price:this.props.product.price)+" "+this.currency} </div>
+                        </div>
+                    }
                     {
                         this.state.subProduct!==null?
                         <div className="cart-button-container">
@@ -144,14 +180,14 @@ export default class ProductListItem extends React.Component {
                 </div>
             </div>
         </div>
-        <img className="image" src={this.props.product.image} alt=""/>
+        <img className="image" src={this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
         <div className="short_desc">
             <div className="title"> {this.labels["short_desc"]} </div>
-            <div className="value"> {this.props.product.short_desc} </div>
+            <div className="value"> {this.props.product.short_description} </div>
         </div>
         <div className="description">
             <div className="title"> {this.labels["desc"]} </div>
-            <div className="value"> {this.props.product.desc} </div>
+            <div className="value"> {this.props.product.description} </div>
             {this.props.product.type===SettingItem.TYPE_CONFIGURABLE?
             <div className="configurable">
                 {this.retrieveConfigurations().map(
@@ -186,7 +222,7 @@ export default class ProductListItem extends React.Component {
                 if(item.title===tempConfigurationItem.title) 
                     tempConfigurationItem.value=configuration_item
             });
-            check = this.props.product.subProducts.some((subProductConfigurationItem) =>
+            check = this.props.product._configurations.some((subProductConfigurationItem) =>
                 this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
             );
         } else {
@@ -207,7 +243,7 @@ export default class ProductListItem extends React.Component {
                     value:configuration_item
                 });
             }
-            check = this.props.product.subProducts.some((subProductConfigurationItem) =>
+            check = this.props.product._configurations.some((subProductConfigurationItem) =>
                 this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
             );
         }
@@ -256,7 +292,7 @@ export default class ProductListItem extends React.Component {
                 if(item.title===value.title) 
                     item.value=selectedValue
             });
-            this.props.product.subProducts.forEach((item) =>{
+            this.props.product._configurations.forEach((item) =>{
                 if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
                     this.setState({subProduct:item});
                 }
@@ -280,7 +316,7 @@ export default class ProductListItem extends React.Component {
                 });
             }
             var productPrediction={counter:0,index:0}
-            this.props.product.subProducts.forEach((item,index) =>{
+            this.props.product._configurations.forEach((item,index) =>{
                 if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
                     productPrediction.counter++;
                     productPrediction.index=index;
@@ -290,13 +326,13 @@ export default class ProductListItem extends React.Component {
                 }
             });
             if(productPrediction.counter===1)
-                this.setState({subProduct:this.props.product.subProducts[productPrediction.index]});
+                this.setState({subProduct:this.props.product._configurations[productPrediction.index]});
         }
     }
 
     renderCards(){
-        return this.props.product.subProducts.map((item,index,array) => 
-            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?()=>{window.location = item.link}:this.clickHandler}> 
+        return this.props.product._configurations.map((item,index,array) => 
+            <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?()=>{window.location = item.URL}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="product-counter"> {(index+1)+"/"+array.length}</div>
                 <div className="name"> {this.props.product.name} </div>
@@ -308,16 +344,21 @@ export default class ProductListItem extends React.Component {
                     starColor={this.props.theme.palette.primary1Color}
                     emptyStarColor={'gray'}
                 />
-                <img className="image" src={this.props.product.image} alt=""/>
+                <img className="image" src={this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
                 <div className="description">
                     <div className="title"> {this.labels["desc"]} </div>
-                    <div className="value"> {this.props.product.desc} </div>
+                    <div className="value"> {this.props.product.description} </div>
                 </div>
                 <div className="card-footer">
-                    <div style={{width:"50%"}}>
-                        <div className="secondary-price strikediag"> {this.props.product.price} </div>
-                        <div className="price"> {this.props.product.price} </div>
-                    </div>
+                    {this.props.product.special_price!==undefined?
+                        <div style={{width:"50%"}}>            
+                            <div className="secondary-price strikediag"> {this.props.product.price+" "+this.currency} </div>
+                            <div className="price"> {this.props.product.special_price+" "+this.currency} </div>
+                        </div>:
+                        <div style={{width:"50%"}}>  
+                            <div className="price"> {this.props.product.price+" "+this.currency} </div>
+                        </div>
+                    }                    
                     <div className="cart-button-container">
                         <button className="cart-button front" onClick={this.buttonClick}> Add To Cart </button>
                         <button className="cart-button back"> DONE </button>
@@ -351,18 +392,23 @@ export default class ProductListItem extends React.Component {
             centerMode: true
         };
         return (
-        !this.props.product.isSelected || this.props.product.subProducts.length===0?
+        !this.props.product.isSelected || this.props.product._configurations.length===0?
         <div> { !this.props.product.isSelected?this.renderVariant():null }
-        <div className={this.props.product.isSelected?"selected product-list-item card":"product-list-item card"} onClick={this.props.product.isSelected || this.props.product.with_option?()=>{window.location = this.props.product.link}:this.clickHandler} style={{zIndex:this.props.product.subProducts.length}}> 
+        <div className={this.props.product.isSelected?"selected product-list-item card":"product-list-item card"} onClick={this.props.product.isSelected || this.props.product.with_option?()=>{window.location = this.props.product.URL}:this.clickHandler} style={{zIndex:this.props.product._configurations.length}}> 
             {this.removeIcon}
             <div className="not-selected-container">
-                <img className="image" src={this.props.product.image} alt=""/>
+                <img className="image" src={this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
                 <div className="info-container">
                     <div className="name"> {this.props.product.name} </div>
-                    <div className="price-container" >
-                        <div className="secondary-price strikediag"> {this.props.product.price} </div>
-                        <div className="price"> {this.props.product.price} </div>
-                    </div>
+                    {this.props.product.special_price!==undefined?
+                        <div className="price-container">
+                            <div className="secondary-price strikediag"> {this.props.product.price+" "+this.currency} </div>
+                            <div className="price"> {this.props.product.special_price+" "+this.currency} </div>
+                        </div>:
+                        <div className="price-container">
+                            <div className="price"> {this.props.product.price+" "+this.currency} </div>
+                        </div>
+                    }
                     <StarRatingComponent 
                         name="rate1" 
                         starCount={5}
@@ -372,25 +418,30 @@ export default class ProductListItem extends React.Component {
                         emptyStarColor={'gray'}
                     />
                     <div className="card-footer">
-                        <div style={{width:"50%",display:this.props.product.isSelected?'block':'none'}}>
-                            <div className="secondary-price strikediag"> {this.props.product.price} </div>
-                            <div className="price"> {this.props.product.price} </div>
-                        </div>
+                        {this.props.product.special_price!==undefined?
+                            <div style={{width:"50%",display:this.props.product.isSelected?'block':'none'}}>
+                                <div className="secondary-price strikediag"> {this.props.product.price+" "+this.currency} </div>
+                                <div className="price"> {this.props.product.special_price+" "+this.currency} </div>
+                            </div>:
+                            <div style={{width:"50%",display:this.props.product.isSelected?'block':'none'}}>
+                                <div className="price"> {this.props.product.price+" "+this.currency} </div>
+                            </div>
+                        }
                         <div className="cart-button-container">
-                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.props.product.isSelected?null:this.props.product.with_option?()=>{window.location = this.props.product.link}:this.buttonClick}> {this.buttonLabel()} </button>
+                            <button className="cart-button front" onClick={(this.props.product.type===SettingItem.TYPE_CONFIGURABLE || this.props.product.type===SettingItem.TYPE_GROUP) && !this.props.product.isSelected?null:this.props.product.with_option?()=>{window.location = this.props.product.URL}:this.buttonClick}> {this.buttonLabel()} </button>
                             <button className="cart-button back"> DONE </button>
                         </div>
                     </div>
                 </div>
             </div>
-            <img className="image" src={this.props.product.image} alt=""/>
+            <img className="image" src={this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
             <div className="short_desc">
                 <div className="title"> {this.labels["short_desc"]} </div>
-                <div className="value"> {this.props.product.short_desc} </div>
+                <div className="value"> {this.props.product.short_description} </div>
             </div>
             <div className="description">
                 <div className="title"> {this.labels["desc"]} </div>
-                <div className="value"> {this.props.product.desc} </div>
+                <div className="value"> {this.props.product.description} </div>
             </div>
         </div>
         </div>:this.props.product.type===SettingItem.TYPE_CONFIGURABLE?
