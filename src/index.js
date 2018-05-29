@@ -6,8 +6,8 @@ import './App.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-var websiteSearchBar= document.getElementById('ittweb-accelasearch-bar');
-var width=document.defaultView.getComputedStyle(document.getElementById("ittweb-accelasearch-bar")).getPropertyValue("width")
+var websiteSearchBar= document.getElementById('search');
+var width=document.defaultView.getComputedStyle(document.getElementById("search")).getPropertyValue("width")
 ReactDOM.render(<App barWidth={width}/>, websiteSearchBar);
 var appContainer= document.getElementById('ittweb-accelasearch-bar-container');
 //websiteSearchBar.parentNode.insertBefore(appContainer, websiteSearchBar.nextSibling);

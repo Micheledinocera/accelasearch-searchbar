@@ -15,12 +15,15 @@ export default class ProductGridItem extends React.Component {
             clicked:false,
             selected:false,
             subProduct:null,
+            subProducts:this.props.product.type===SettingItem.TYPE_CONFIGURABLE?this.props.product._configurations:
+                        this.props.product.type===SettingItem.TYPE_GROUP?this.props.product.in_group:
+                        [],
             partialConfiguration:[]
         }
         this.labels=Labels.getLabels(document.documentElement.lang);
         this.filterAttributes = this.filterAttributes.bind(this);
         this.currency=SettingItem.currency;
-        this.configurationLength=this.props.product._configurations.length>0 && this.props.product._configurations[0].attributes!=null?this.props.product._configurations[0].attributes.length:0;
+        this.configurationLength= this.state.subProducts.length>0 && this.state.subProducts[0].attributes!=null?this.state.subProducts[0].attributes.length:0;
         this.retrieveConfigurations = this.retrieveConfigurations.bind(this);
         this.closeHandler=this.closeHandler.bind(this);
         this.checkSubProductConfiguration = this.checkSubProductConfiguration.bind(this);
@@ -82,7 +85,7 @@ export default class ProductGridItem extends React.Component {
     }
 
     renderVariant(){
-        return this.props.product._configurations.map((item,index,array) => 
+        return this.state.subProducts.map((item,index,array) => 
             <div className={"sub-products product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?null:this.clickHandler} ref={(node) => {
                 if (node) {
                   node.style.setProperty("margin-top", (this.props.display===SettingItem.DISPLAY_DOUBLE_COLUMN?35:-10)-5*index+"px", "important");
@@ -117,32 +120,32 @@ export default class ProductGridItem extends React.Component {
     } 
 
     renderCards(){
-        return this.props.product._configurations.map((item,index,array) => 
+        return this.state.subProducts.map((item,index,array) => 
             <div className={"product-grid-item card"} key={"sub-products-"+item.name+"-"+index} onClick={this.props.product.isSelected?()=>{window.location = item.URL}:this.clickHandler}> 
                 {this.removeIcon}
                 <div className="product-counter"> {(index+1)+"/"+array.length}</div>
-                <div className="name"> {this.props.product.name} </div>
+                <div className="name"> {item.name} </div>
                 <StarRatingComponent 
                     name="rate1" 
                     starCount={5}
-                    value={this.props.product.rating}
+                    value={item.rating}
                     editing={false}
                     starColor={this.props.theme.palette.primary1Color}
                     emptyStarColor={'gray'}
                 />
-                <img className="image" src={this.props.product.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
+                <img className="image" src={item.image} onError={(e)=>e.target.src=ImagePlaceholder} alt=""/>
                 <div className="description">
                     <div className="title"> {this.labels["desc"]} </div>
-                    <div className="value"> {this.props.product.description} </div>
+                    <div className="value"> {item.description} </div>
                 </div>
                 <div className="card-footer">
-                    {this.props.product.special_price!==undefined?
+                    {item.special_price!==undefined?
                         <div style={{width:"50%"}}>            
-                            <div className="secondary-price strikediag"> {this.props.product.price+" "+this.currency} </div>
-                            <div className="price"> {this.props.product.special_price+" "+this.currency} </div>
+                            <div className="secondary-price strikediag"> {item.price+" "+this.currency} </div>
+                            <div className="price"> {item.special_price+" "+this.currency} </div>
                         </div>:
                         <div style={{width:"50%"}}>  
-                            <div className="price"> {this.props.product.price+" "+this.currency} </div>
+                            <div className="price"> {item.price+" "+this.currency} </div>
                         </div>
                     }
                     <div className="cart-button-container">
@@ -190,11 +193,11 @@ export default class ProductGridItem extends React.Component {
                     :null}
                 </div>
                 <div className="card-footer">
-                    {this.state.subProduct!==null && this.state.subProduct.special_price!==undefined?
+                    {/*this.state.subProduct!==null && this.state.subProduct.special_price!==undefined?
                         <div style={{width:"50%"}}>            
                             <div className="secondary-price strikediag"> {(this.state.subProduct!==null?this.state.subProduct.price:this.props.product.price)+" "+this.currency} </div>
                             <div className="price"> {(this.state.subProduct!==null?this.state.subProduct.special_price:this.props.product.special_price)+" "+this.currency} </div>
-                        </div>:
+                        </div>:*/
                         <div style={{width:"50%"}}>  
                             <div className="price"> {(this.state.subProduct!==null?this.state.subProduct.price:this.props.product.price)+" "+this.currency} </div>
                         </div>
@@ -213,8 +216,8 @@ export default class ProductGridItem extends React.Component {
     }
 
     retrieveConfigurations(){
-        if(this.props.product._configurations.length>0 && this.props.product._configurations[0].attributes!=null){
-            this.props.product._configurations.forEach((item)=>{
+        if(this.state.subProducts.length>0 && this.state.subProducts[0].attributes!=null){
+            this.state.subProducts.forEach((item)=>{
                 var attributesTemp=[];
                 item.attributes.forEach((subItem)=>attributesTemp.push({
                     //"type":subItem.split(":")[0]==="color"?"color":"other",
@@ -226,7 +229,7 @@ export default class ProductGridItem extends React.Component {
                 item.configuration=attributesTemp.filter((subItem)=>this.filterAttributes(subItem.title));
             });
         };
-        this.props.product._configurations.forEach((item) => {
+        this.state.subProducts.forEach((item) => {
             item.configuration.forEach( (configuration_item) => {
                 if( this.configurations.filter((configurations_item)=> configurations_item.title===configuration_item.title).length===0)
                     this.configurations.push({
@@ -263,7 +266,7 @@ export default class ProductGridItem extends React.Component {
                 if(item.title===tempConfigurationItem.title) 
                     tempConfigurationItem.value=configuration_item
             });
-            check = this.props.product._configurations.some((subProductConfigurationItem) =>
+            check = this.state.subProducts.some((subProductConfigurationItem) =>
                 this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
             );
         } else {
@@ -284,7 +287,7 @@ export default class ProductGridItem extends React.Component {
                     value:configuration_item
                 });
             }
-            check = this.props.product._configurations.some((subProductConfigurationItem) =>
+            check = this.state.subProducts.some((subProductConfigurationItem) =>
                 this.checkConfigurationEquality(subProductConfigurationItem.configuration,tempConfiguration)  
             );
         }
@@ -321,7 +324,7 @@ export default class ProductGridItem extends React.Component {
                 if(item.title===value.title) 
                     item.value=selectedValue
             });
-            this.props.product._configurations.forEach((item) =>{
+            this.state.subProducts.forEach((item) =>{
                 if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
                     this.setState({subProduct:item});
                 }
@@ -345,7 +348,7 @@ export default class ProductGridItem extends React.Component {
                 });
             }
             var productPrediction={counter:0,index:0}
-            this.props.product._configurations.forEach((item,index) =>{
+            this.state.subProducts.forEach((item,index) =>{
                 if(this.checkConfigurationEquality(item.configuration,tempConfiguration)){
                     productPrediction.counter++;
                     productPrediction.index=index;
@@ -355,7 +358,7 @@ export default class ProductGridItem extends React.Component {
                 }
             });
             if(productPrediction.counter===1)
-                this.setState({subProduct:this.props.product._configurations[productPrediction.index]});
+                this.setState({subProduct:this.state.subProducts[productPrediction.index]});
         }
     }
 
@@ -391,10 +394,10 @@ export default class ProductGridItem extends React.Component {
             centerMode: true
           };
         return (
-            !this.props.product.isSelected || this.props.product._configurations.length===0?
+            !this.props.product.isSelected || this.state.subProducts.length===0?
             <div className={"single-product-container "+this.setClassName()} style={{width: this.props.display===SettingItem.DISPLAY_SINGLE_COLUMN?"100%":"92%"}}>
                 { this.renderVariant() }
-                <div className="product-grid-item card" onClick={this.props.product.isSelected  || this.props.product.with_option?()=>{window.location = this.props.product.URL}:this.clickHandler} style={{zIndex:this.props.product._configurations.length}}> 
+                <div className="product-grid-item card" onClick={this.props.product.isSelected  || this.props.product.with_option?()=>{window.location = this.props.product.URL}:this.clickHandler} style={{zIndex:this.state.subProducts.length}}> 
                     {this.removeIcon}
                     <div className="name"> {this.props.product.name} </div>
                     <StarRatingComponent 
@@ -415,13 +418,17 @@ export default class ProductGridItem extends React.Component {
                         <div className="value"> {this.props.product.description} </div>
                     </div>
                     <div className="card-footer">
-                        {this.props.product.special_price!==undefined?
-                            <div style={{width:"50%"}}>            
+                        {this.props.product.type!==SettingItem.TYPE_CONFIGURABLE && this.props.product.type!==SettingItem.TYPE_GROUP?
+                        this.props.product.special_price!==undefined?
+                            <div style={{width:"50%"}}>
                                 <div className="secondary-price strikediag"> {this.props.product.price+" "+this.currency} </div>
                                 <div className="price"> {this.props.product.special_price+" "+this.currency} </div>
                             </div>:
-                            <div style={{width:"50%"}}>  
+                            <div style={{width:"50%"}}>
                                 <div className="price"> {this.props.product.price+" "+this.currency} </div>
+                            </div>:
+                            <div style={{width:"50%"}}>
+                                <div className="from-price"> {"From " + this.props.product.min_price+" "+this.currency} </div>
                             </div>
                         }
                         <div className="cart-button-container">

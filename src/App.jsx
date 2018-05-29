@@ -93,7 +93,7 @@ class App extends React.Component {
     this.voiceRecognize = this.voiceRecognize.bind(this);
     this.selectedCategoryHandler = this.selectedCategoryHandler.bind(this);
     this.radioSelectedhandler = this.radioSelectedhandler.bind(this);
-    this.websiteSearchBar=$('#ittweb-accelasearch-bar');
+    this.websiteSearchBar=$('#search');
     // this.websiteSearchBar.on("change paste keyup",this.handleChange);
     this.websiteSearchBar.on("focus",this.showLayer);
     this.primaryColor="#306ccc";

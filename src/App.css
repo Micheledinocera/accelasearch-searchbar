@@ -651,6 +651,7 @@ button.toggle-list{
 
 .double-column .product-grid-item.selected>img,.slick-list .product-grid-item>img{
   width: 400px !important;
+  height: 500px;
 }
 
 .product-list-item.selected>.not-selected-container>.image{
@@ -774,7 +775,21 @@ button.toggle-list{
   font-weight: 600;
   margin-left: 20px;
   margin-bottom: 6px;
-	
+}
+
+.double-column .from-price{
+  width: 70%;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.single-column .from-price{
+  width: 75%;
+  font-size: 30px;
+  font-weight: 600;
+  margin-left: 20px;
+  margin-bottom: 6px;
 }
 
 .card-footer{

@@ -67,7 +67,7 @@ export default class DummyData{
             'values':['Men','Women','Accessories','Sale','VIP']
         },{
             'title':'most_searched',
-            'values':['Borsone2','Borsa brutta2','Borsa bella2','Borsa vuota2','Borsa bruttissima2','Borsa inutilissimissima2']
+            'values':['shirt','jeans','tee','dress','luggage']
         },{
             'title':'maybe_looking',
             'values':[]
