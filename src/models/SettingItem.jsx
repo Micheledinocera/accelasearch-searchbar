@@ -31,7 +31,7 @@ export default class SettingItem {
         "Rating discendente"
     ];
 
-    static url="http://demo.dev1.accelasearch.net/?q=";
+    static url="https://demo.dev1.accelasearch.net/?q=";
     static currency="€";
     type ="";
     title="";
